@@ -1,12 +1,14 @@
 version: '3.7'
 services: 
   zmq:
+    restart: always
     privileged: true # Allow server to acces rpi GPIO for controlling LEDs
     build:
       context: ./led-zmq-server
       dockerfile: ./DockerfileProduction
 
   ui:
+    restart: always
     build:
       context: ./led-frontend
       target: 'production-stage'
@@ -14,6 +16,7 @@ services:
     - '80:80'
 
   api:
+    restart: always
     build:
       context: ./led-api-server
       dockerfile: ./deploy/Dockerfile
