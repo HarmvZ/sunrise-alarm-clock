@@ -2,11 +2,11 @@ version: '3.7'
 services: 
   zmq:
     build:
-      context: ./led-rpc-server
+      context: ./led-zmq-server
       dockerfile: ./Dockerfile
     volumes:
       - type: bind
-        source: ./led-rpc-server
+        source: ./led-zmq-server
         target: /home/docker/code
 
   ui:
@@ -21,13 +21,13 @@ services:
 
   api:
     build:
-      context: ./led-server
+      context: ./led-api-server
       dockerfile: ./dockerfiles/Dockerfile
     ports:
       - "8888:8000"
     volumes:
       - type: bind
-        source: ./led-server/app
+        source: ./led-api-server/app
         target: /home/pi/app/app/
     command: >-
       bash -c "
