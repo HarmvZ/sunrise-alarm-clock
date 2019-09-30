@@ -1,0 +1,38 @@
+version: '3.7'
+services: 
+  zmq:
+    build:
+      context: ./led-rpc-server
+      dockerfile: ./Dockerfile
+    volumes:
+      - type: bind
+        source: ./led-rpc-server
+        target: /home/docker/code
+
+  ui:
+    build:
+      context: ./led-frontend
+      target: 'develop-stage'
+    ports:
+    - '80:80'
+    volumes:
+    - './led-frontend:/app'
+    command: /bin/sh -c "yarn && quasar dev"
+
+  api:
+    build:
+      context: ./led-server
+      dockerfile: ./dockerfiles/Dockerfile
+    ports:
+      - "8888:8000"
+    volumes:
+      - type: bind
+        source: ./led-server/app
+        target: /home/pi/app/app/
+    command: >-
+      bash -c "
+      cd /home/pi/app/app
+      && python3 manage.py migrate
+      && python3 manage.py runserver 0.0.0.0:8000 
+      "
+      
