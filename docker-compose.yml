@@ -14,7 +14,7 @@ services:
       context: ./led-frontend
       target: 'develop-stage'
     ports:
-    - '80:80'
+    - '8088:8088'
     volumes:
     - './led-frontend:/app'
     command: /bin/sh -c "yarn && quasar dev"
