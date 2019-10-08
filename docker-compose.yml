@@ -1,6 +1,7 @@
 version: '3.7'
 services: 
   zmq:
+    privileged: true
     build:
       context: ./led-zmq-server
       dockerfile: ./Dockerfile
