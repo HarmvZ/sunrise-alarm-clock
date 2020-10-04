@@ -117,6 +117,11 @@ LOGGING = {
     },
 }
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-key')
+
+ALLOWED_HOSTS = [os.environ.get('HOSTNAME', 'localhost')]
+
 # ZeroMQ Lazy Pirate settings
 REQUEST_TIMEOUT = 2500
 REQUEST_RETRIES = 3
