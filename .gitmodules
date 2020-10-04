@@ -1,9 +1,0 @@
-[submodule "led-zmq-server"]
-	path = led-zmq-server
-	url = https://github.com/HarmvZ/led-zmq-server.git
-[submodule "led-api-server"]
-	path = led-api-server
-	url = https://github.com/HarmvZ/led-api-server.git
-[submodule "led-frontend"]
-	path = led-frontend
-	url = https://github.com/HarmvZ/led-frontend.git
