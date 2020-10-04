@@ -5,7 +5,7 @@ services:
     privileged: true # Allow server to acces rpi GPIO for controlling LEDs
     build:
       context: ./led-zmq-server
-      dockerfile: ./DockerfileProduction
+      dockerfile: ./Dockerfile
 
   ui:
     restart: always
@@ -20,5 +20,6 @@ services:
     build:
       context: ./led-api-server
       dockerfile: ./deploy/Dockerfile
+      target: 'production-stage'
     ports:
       - "8888:8888"
