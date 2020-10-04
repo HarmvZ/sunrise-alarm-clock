@@ -4,16 +4,22 @@ services:
     privileged: true
     build:
       context: ./led-zmq-server
-      dockerfile: ./Dockerfile
+      target: 'develop-stage'
     volumes:
       - type: bind
         source: ./led-zmq-server
         target: /home/docker/code
+    ports:
+    - '5555:5555'
 
   ui:
     build:
       context: ./led-frontend
       target: 'develop-stage'
+    env_file:
+      - .env      
+    environment:
+      - HOSTNAME=localhost
     ports:
     - '8088:8088'
     volumes:
@@ -24,7 +30,12 @@ services:
     build:
       context: ./led-api-server
       dockerfile: ./deploy/Dockerfile
-      target: 'develop-stage' 
+      target: 'develop-stage'
+    env_file:
+      - .env      
+    environment:
+      - HOSTNAME=localhost
+      - DJANGO_SECRET_KEY=unsafe_key
     ports:
       - "8888:8000"
     volumes:
