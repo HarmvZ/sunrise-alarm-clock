@@ -17,8 +17,10 @@ FROM ubuntu:16.04 as base-stage
 # Install required packages and remove the apt packages cache when done.
 
 RUN apt-get update && \
-	apt-get upgrade -y && \ 	
+	apt-get upgrade -y && \
 	apt-get install -y \
+        nginx \
+        supervisor \
 	git \
 	python3 \
 	python3-dev \
@@ -50,6 +52,9 @@ COPY . /home/docker/code/
 
 
 FROM base-stage as production-stage
+# install uwsgi now because it takes a little while
+RUN pip3 install uwsgi
+
 # setup all the configfiles
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY deploy/nginx-app.conf /etc/nginx/sites-available/default

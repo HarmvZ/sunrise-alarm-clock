@@ -11,5 +11,5 @@ CMD ["python", "/home/docker/code/app/zmq_server.py"]
 
 
 FROM base-stage as production-stage
-RUN pip3 install -r /home/docker/requirements/local.txt
+RUN pip3 install -r /home/docker/requirements/production.txt
 CMD ["python", "/home/docker/code/app/zmq_server.py"]
