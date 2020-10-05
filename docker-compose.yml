@@ -16,6 +16,8 @@ services:
     build:
       context: ./led-frontend
       target: 'develop-stage'
+      args:
+        - HOSTNAME=localhost
     env_file:
       - .env      
     environment:

@@ -6,6 +6,8 @@ RUN yarn global add @quasar/cli
 COPY . .
 # build stage
 FROM develop-stage as build-stage
+ARG HOSTNAME
+ENV HOSTNAME=${HOSTNAME}
 RUN yarn
 RUN quasar build
 # production stage

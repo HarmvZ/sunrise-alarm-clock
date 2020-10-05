@@ -14,6 +14,8 @@ services:
     build:
       context: ./led-frontend
       target: 'production-stage'
+      args:
+        - HOSTNAME
     env_file:
       - .env
     ports:
