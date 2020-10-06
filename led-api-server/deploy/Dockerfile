@@ -32,6 +32,10 @@ RUN apt-get update && \
 	pip3 install -U pip setuptools && \
 	rm -rf /var/lib/apt/lists/*
 
+# enable cron service
+RUN update-rc.d cron defaults
+
+
 # set timezone
 ENV TZ=Europe/Amsterdam
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
