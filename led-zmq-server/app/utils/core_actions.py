@@ -1,5 +1,6 @@
 from rpi_ws281x import Color
 
+
 def fill_colors(strip, color_matrix):
     """Wipe color across display a pixel at a time."""
     for i in range(strip.numPixels()):
@@ -11,11 +12,13 @@ def fill_colors(strip, color_matrix):
         strip.setPixelColor(i, color)
     strip.show()
 
+
 def color_wipe(strip, color):
     """Wipe color across display a pixel at a time."""
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, color)
     strip.show()
+
 
 def wheel(pos):
     """Generate rainbow colors across 0-255 positions."""

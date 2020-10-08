@@ -34,3 +34,5 @@ CLOCK_FOREGROUND_COLOR = {"r": 255, "g": 0, "b": 0}
 
 # Spoken information settings
 #########################
+SOUND_FILE_PATH = "story.mp3"
+SOUND_NAME = "Harrum"

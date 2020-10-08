@@ -16,7 +16,7 @@ class Command(BaseCommand):
         try:
             zmqc = ZMQClient()
             zmqc.perform_request("start_alarm")
+            self.log("Alarm successfully started")
         except Exception as e:
             self.log(str(e))
             raise CommandError(str(e))
-        self.log("Alarm successfully started")

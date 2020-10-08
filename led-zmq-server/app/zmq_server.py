@@ -1,4 +1,3 @@
-import time
 import zmq
 from led_core import LedCore
 
@@ -16,7 +15,9 @@ while True:
             lc.strip_action(message["action"], **message["kwargs"])
         socket.send_pyobj(result)
     except Exception as e:
-        result = f"An exception of type {type(e).__name__} occurred. Arguments:\n{str(e.args)}"
+        result = "An exception of type {} occurred. Arguments:\n{}".format(
+            type(e).__name__, str(e.args)
+        )
 
 socket.close()
 context.term()

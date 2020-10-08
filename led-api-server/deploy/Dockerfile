@@ -17,21 +17,20 @@ FROM ubuntu:16.04 as base-stage
 # Install required packages and remove the apt packages cache when done.
 
 RUN apt-get update && \
-	apt-get upgrade -y && \
-	apt-get install -y \
-        nginx \
-        supervisor \
-	git \
-	python3 \
-	python3-dev \
-	python3-setuptools \
-	python3-pip \
-	cron \
-	tzdata \
-	nano \
-	sqlite3 && \
-	pip3 install -U pip setuptools && \
-	rm -rf /var/lib/apt/lists/*
+    apt-get upgrade -y && \
+    apt-get install -y \
+    nginx \
+    supervisor \
+    python3 \
+    python3-dev \
+    python3-setuptools \
+    python3-pip \
+    cron \
+    tzdata \
+    nano \
+    sqlite3 && \
+    pip3 install -U pip setuptools && \
+    rm -rf /var/lib/apt/lists/*
 
 # set timezone
 ENV TZ=Europe/Amsterdam

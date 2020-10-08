@@ -1,6 +1,12 @@
-import numpy as np
 import time
+
+import pygame
+import numpy as np
+from gtts import gTTS
 from rpi_ws281x import Color
+from settings import SOUND_FILE_PATH
+from utils.alarm_text import create_text
+from utils.core_actions import color_wipe
 from utils.stoppable_thread import StoppableThread
 
 
@@ -28,10 +34,34 @@ class AlarmThread(StoppableThread):
             # create exponential range from 0 to 1
             log_range = (log_range - 1) / (np.exp(100) - 1)
             color = start_color + color_delta * lin_range / 100  # log_range
-            self.color_wipe(Color(int(color[0]), int(color[1]), int(color[2])))
+            color_wipe(
+                self.strip,
+                Color(
+                    int(color[0]),
+                    int(color[1]),
+                    int(color[2])
+                )
+            )
             if self.stopped():
                 return
             time.sleep(self.timestep / 1000)
 
             # TODO add dithering, color from black -> deep orange ->  white
 
+        alarm_text = create_text()
+        if self.stopped():
+            return
+
+        tts = gTTS(alarm_text, lang="nl")
+        tts.save(SOUND_FILE_PATH)
+
+        if self.stopped():
+            return
+
+        pygame.mixer.init()
+        pygame.mixer.music.load(SOUND_FILE_PATH)
+        while pygame.mixer.get_busy():
+            pygame.mixer.music.get_pos()
+            if self.stopped():
+                pygame.mixer.quit()
+                return
