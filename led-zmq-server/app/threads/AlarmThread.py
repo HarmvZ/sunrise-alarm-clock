@@ -5,7 +5,7 @@ import numpy as np
 # from gtts import gTTS
 from rpi_ws281x import Color
 from settings import SOUND_FILE_PATH
-from utils.alarm_text import create_text
+# from utils.alarm_text import create_text
 from utils.core_actions import color_wipe
 from utils.stoppable_thread import StoppableThread
 
