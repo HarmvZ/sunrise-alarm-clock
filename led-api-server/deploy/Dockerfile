@@ -28,13 +28,10 @@ RUN apt-get update && \
 	python3-pip \
 	cron \
 	tzdata \
+	nano \
 	sqlite3 && \
 	pip3 install -U pip setuptools && \
 	rm -rf /var/lib/apt/lists/*
-
-# enable cron service
-RUN update-rc.d cron defaults
-
 
 # set timezone
 ENV TZ=Europe/Amsterdam

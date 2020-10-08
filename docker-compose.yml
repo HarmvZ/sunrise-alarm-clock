@@ -46,7 +46,8 @@ services:
         target: /home/docker/code
     command: >-
       bash -c "
-      cd /home/docker/code/app
+      service cron start
+      && cd /home/docker/code/app
       && python3 manage.py migrate
       && python3 manage.py runserver 0.0.0.0:8000 
       "
