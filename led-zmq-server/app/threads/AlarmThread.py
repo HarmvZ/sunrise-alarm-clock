@@ -1,8 +1,8 @@
 import time
 
-import pygame
+# import pygame
 import numpy as np
-from gtts import gTTS
+# from gtts import gTTS
 from rpi_ws281x import Color
 from settings import SOUND_FILE_PATH
 from utils.alarm_text import create_text
@@ -15,7 +15,6 @@ class AlarmThread(StoppableThread):
         super().__init__(strip)
         self.steps = kwargs["steps"]
         self.timestep = kwargs["timestep"]
-        self.music_thread = None
 
     def run(self):
         """
@@ -48,20 +47,20 @@ class AlarmThread(StoppableThread):
 
             # TODO add dithering, color from black -> deep orange ->  white
 
-        alarm_text = create_text()
-        if self.stopped():
-            return
+        # alarm_text = create_text()
+        # if self.stopped():
+        #     return
 
-        tts = gTTS(alarm_text, lang="nl")
-        tts.save(SOUND_FILE_PATH)
+        # tts = gTTS(alarm_text, lang="nl")
+        # tts.save(SOUND_FILE_PATH)
 
-        if self.stopped():
-            return
+        # if self.stopped():
+        #     return
 
-        pygame.mixer.init()
-        pygame.mixer.music.load(SOUND_FILE_PATH)
-        while pygame.mixer.get_busy():
-            pygame.mixer.music.get_pos()
-            if self.stopped():
-                pygame.mixer.quit()
-                return
+        # pygame.mixer.init()
+        # pygame.mixer.music.load(SOUND_FILE_PATH)
+        # while pygame.mixer.get_busy():
+        #     pygame.mixer.music.get_pos()
+        #     if self.stopped():
+        #         pygame.mixer.quit()
+        #         return
