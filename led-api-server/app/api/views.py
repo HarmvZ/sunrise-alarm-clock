@@ -11,6 +11,7 @@ from api.serializers import (
     ClockSerializer,
     AnimationSerializer,
     AlarmSerializer,
+    StartAlarmSerializer,
 )
 from api.utils import bit24_to_3_bit8
 from api.zmq_client import ZMQClient
@@ -55,7 +56,11 @@ def abstract_view(request, fn_name, Serializer, kwarg_keys=[]):
         zmqc.perform_request(fn_name, **kwargs)
         success = True
     status = 200 if success else 400
-    return JsonResponse({ "success": success }, status=status)
+    data = {"success": success}
+    if not success:
+        data.update({"errors": serializer.errors})
+
+    return JsonResponse(data, status=status)
 
 @api_view(["POST"])
 def set_color(request):
@@ -91,4 +96,13 @@ def show_animation(request):
         "animation", 
         AnimationSerializer, 
         ["animation", "wait_ms"]
+    )
+
+@api_view(["POST"])
+def start_alarm(request):
+    return abstract_view(
+        request, 
+        "start_alarm", 
+        StartAlarmSerializer, 
+        ["steps", "timestep"]
     )

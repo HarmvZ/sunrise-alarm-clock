@@ -44,3 +44,7 @@ class AnimationSerializer(serializers.Serializer):
         choices=["rainbow", "rainbowCycle", "theaterChaseRainbow"]
     )
     wait_ms = serializers.IntegerField(min_value=1, required=False, default=20)
+
+class StartAlarmSerializer(serializers.Serializer):
+    steps = serializers.IntegerField(min_value=1, required=False, default=100)
+    timestep = serializers.IntegerField(min_value=1, required=False, default=20)

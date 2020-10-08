@@ -1,5 +1,19 @@
 <template>
   <q-page class="items-center q-px-md">
+    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
+      <q-card-section class="bg-primary text-white">
+        <div class="text-h6">Alarm</div>
+      </q-card-section>
+      <div class="row items-center">
+        <q-btn
+          label="Test alarm"
+          @click="startAlarm()"
+          color="primary"
+          size="lg"
+          class="col-12 q-ma-md"
+        />
+      </div>
+    </q-card>
     <router-link to="/alarms">
       <UpcomingAlarm />
     </router-link>
@@ -53,5 +67,17 @@ export default {
       alarm: false,
     };
   },
+  methods: {
+    startAlarm () {
+      const data = { steps: 100, timestep: 20 };
+      const url = '/api/start_alarm/';
+      this.request({
+        method: 'POST',
+        url,
+        data,
+        responseType: 'json',
+      });
+    },
+  }
 };
 </script>
