@@ -1,157 +1,157 @@
-import feedparser
-import re
-from datetime import datetime
-from pytz import timezone
-from settings import SOUND_NAME
+# import feedparser
+# import re
+# from datetime import datetime
+# from pytz import timezone
+# from settings import SOUND_NAME
 
 
-def create_text():
-    # Get data
-    greeting = get_greeting()
-    nos_news = get_nos_news()
-    nunl_news = get_nunl_news()
-    weather = get_weather()
-    traffic = get_traffic()
+# def create_text():
+#     # Get data
+#     greeting = get_greeting()
+#     nos_news = get_nos_news()
+#     nunl_news = get_nunl_news()
+#     weather = get_weather()
+#     traffic = get_traffic()
 
-    # Create text story
-    story = (
-        " ".join([greeting, weather, traffic, nunl_news, nos_news])
-    )
-    return story
-
-
-def get_greeting():
-    amsterdam = timezone('Europe/Amsterdam')
-    now = amsterdam.localize(datetime.now())
-    day_and_time = now.strftime("%A %d %B, %H:%M")
-
-    if int(now.strftime("%H")) < 12:
-        period = "morgen"
-    else:
-        period = "middag"
-    if int(now.strftime("%H")) >= 17:
-        period = "navond"
-
-    # reads out good morning + my name
-    gmt = "Goede" + period + " " + SOUND_NAME
-
-    # reads date and time
-    day = ", het is vandaag " + day_and_time + ".  "
-
-    return gmt + day
+#     # Create text story
+#     story = (
+#         " ".join([greeting, weather, traffic, nunl_news, nos_news])
+#     )
+#     return story
 
 
-def get_nos_news():
-    try:
-        # News
-        rss_url = "http://feeds.nos.nl/nosnieuwsalgemeen"
-        rss = feedparser.parse(rss_url)
+# def get_greeting():
+#     amsterdam = timezone('Europe/Amsterdam')
+#     now = amsterdam.localize(datetime.now())
+#     day_and_time = now.strftime("%A %d %B, %H:%M")
 
-        news = "En nu, de 5 laatste artikelen van NOS Algemeen. "
+#     if int(now.strftime("%H")) < 12:
+#         period = "morgen"
+#     else:
+#         period = "middag"
+#     if int(now.strftime("%H")) >= 17:
+#         period = "navond"
 
-        # Get headlines of top 5 stories
-        for story in rss["entries"][:5]:
-            news += story["title"] + ". "
+#     # reads out good morning + my name
+#     gmt = "Goede" + period + " " + SOUND_NAME
 
-    except Exception:
-        news = "NOS Nieuws ophalen is niet gelukt. "
+#     # reads date and time
+#     day = ", het is vandaag " + day_and_time + ".  "
 
-    return news
-
-
-def get_nunl_news():
-    try:
-        # News
-        rss_url = "https://www.nu.nl/rss/Algemeen"
-        rss = feedparser.parse(rss_url)
-
-        news = "En nu, de 5 laatste artikelen van Nu.nl Algemeen. "
-
-        # Get headlines of top 5 stories
-        for story in rss["entries"][:5]:
-            news += story["title"] + ". " + story["summary"] + ". "
-
-    except Exception:
-        news = "Nu.nl Nieuws ophalen is niet gelukt. "
-
-    return news
+#     return gmt + day
 
 
-@staticmethod
-def weather_clean_up(text):
-    # Remove any html tag
-    text = re.sub(r"</?[^>]*>", " ", text)
-    # Remove uitgifte text
-    text = re.sub(r"Uitgifte: [0-9/. ]* uur LT", " ", text)
+# def get_nos_news():
+#     try:
+#         # News
+#         rss_url = "http://feeds.nos.nl/nosnieuwsalgemeen"
+#         rss = feedparser.parse(rss_url)
 
-    # Remove special cases
-    remove = ["&nbsp;", "(Bron: KNMI)", " LT"]
-    for rm in remove:
-        text = text.replace(rm, "")
-    return text
+#         news = "En nu, de 5 laatste artikelen van NOS Algemeen. "
 
+#         # Get headlines of top 5 stories
+#         for story in rss["entries"][:5]:
+#             news += story["title"] + ". "
 
-def get_weather():
-    try:
-        # Weather
-        rss_url = "http://projects.knmi.nl/RSSread/rss_KNMIverwachtingen.php"
-        rss = feedparser.parse(rss_url)
+#     except Exception:
+#         news = "NOS Nieuws ophalen is niet gelukt. "
 
-        summary_dirty = rss["entries"][0]["title"]
-        # summary_clean = weather_clean_up(summary_dirty) + ". "
-        weather = "En nu, de weersverwachtingen van het KNMI. " + summary_dirty
-
-    except Exception:
-        weather = "Weer ophalen is niet gelukt. "
-
-    return weather
+#     return news
 
 
-@staticmethod
-def traffic_clean_up(text):
-    return (
-        text.replace("Situatie:", "")
-        .replace("Bron: Verkeerplaza.nl:", "")
-        .replace(">", "naar")
-    )
+# def get_nunl_news():
+#     try:
+#         # News
+#         rss_url = "https://www.nu.nl/rss/Algemeen"
+#         rss = feedparser.parse(rss_url)
+
+#         news = "En nu, de 5 laatste artikelen van Nu.nl Algemeen. "
+
+#         # Get headlines of top 5 stories
+#         for story in rss["entries"][:5]:
+#             news += story["title"] + ". " + story["summary"] + ". "
+
+#     except Exception:
+#         news = "Nu.nl Nieuws ophalen is niet gelukt. "
+
+#     return news
 
 
-def get_traffic():
-    try:
-        # Traffic
-        rss_url = "https://www.verkeerplaza.nl/rssfeed"
-        rss = feedparser.parse(rss_url)
+# @staticmethod
+# def weather_clean_up(text):
+#     # Remove any html tag
+#     text = re.sub(r"</?[^>]*>", " ", text)
+#     # Remove uitgifte text
+#     text = re.sub(r"Uitgifte: [0-9/. ]* uur LT", " ", text)
 
-        jams = rss["entries"]
+#     # Remove special cases
+#     remove = ["&nbsp;", "(Bron: KNMI)", " LT"]
+#     for rm in remove:
+#         text = text.replace(rm, "")
+#     return text
 
-        traffic = "En nu, de actuele verkeersinformatie. "
-        traffic += "Er staan op dit moment {} files. ".format(
-            len(jams)
-        )
 
-        if len(jams) > 5:
-            traffic += "Het is druk op de weg, "
-            # Filter if more than 5 traffic jams
-            useful_jams = []
-            for jam in jams:
-                if "A50" in jam["title"]:
-                    useful_jams.append(jam)
-            if len(useful_jams) > 0:
-                jams = useful_jams
-                traffic += "dit zijn de files op de A50. "
-            else:
-                jams = []
-                traffic += "er staan geen files op de A50. "
+# def get_weather():
+#     try:
+#         # Weather
+#         rss_url = "http://projects.knmi.nl/RSSread/rss_KNMIverwachtingen.php"
+#         rss = feedparser.parse(rss_url)
 
-        for jam in jams:
-            traffic += (
-                traffic_clean_up(jam["summary"])
-                + " op "
-                + traffic_clean_up(jam["title"])
-                + ". "
-            )
+#         summary_dirty = rss["entries"][0]["title"]
+#         # summary_clean = weather_clean_up(summary_dirty) + ". "
+#         weather = "En nu, de weersverwachtingen van het KNMI. " + summary_dirty
 
-    except Exception:
-        traffic = "Verkeer ophalen is niet gelukt."
+#     except Exception:
+#         weather = "Weer ophalen is niet gelukt. "
 
-    return traffic
+#     return weather
+
+
+# @staticmethod
+# def traffic_clean_up(text):
+#     return (
+#         text.replace("Situatie:", "")
+#         .replace("Bron: Verkeerplaza.nl:", "")
+#         .replace(">", "naar")
+#     )
+
+
+# def get_traffic():
+#     try:
+#         # Traffic
+#         rss_url = "https://www.verkeerplaza.nl/rssfeed"
+#         rss = feedparser.parse(rss_url)
+
+#         jams = rss["entries"]
+
+#         traffic = "En nu, de actuele verkeersinformatie. "
+#         traffic += "Er staan op dit moment {} files. ".format(
+#             len(jams)
+#         )
+
+#         if len(jams) > 5:
+#             traffic += "Het is druk op de weg, "
+#             # Filter if more than 5 traffic jams
+#             useful_jams = []
+#             for jam in jams:
+#                 if "A50" in jam["title"]:
+#                     useful_jams.append(jam)
+#             if len(useful_jams) > 0:
+#                 jams = useful_jams
+#                 traffic += "dit zijn de files op de A50. "
+#             else:
+#                 jams = []
+#                 traffic += "er staan geen files op de A50. "
+
+#         for jam in jams:
+#             traffic += (
+#                 traffic_clean_up(jam["summary"])
+#                 + " op "
+#                 + traffic_clean_up(jam["title"])
+#                 + ". "
+#             )
+
+#     except Exception:
+#         traffic = "Verkeer ophalen is niet gelukt."
+
+#     return traffic
