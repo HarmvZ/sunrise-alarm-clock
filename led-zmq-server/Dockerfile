@@ -1,6 +1,11 @@
 FROM python:3.7.4-buster as base-stage
 COPY requirements /home/docker/requirements/
 RUN pip3 install -r /home/docker/requirements/requirements.txt
+
+# set timezone
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 EXPOSE 5555
 COPY . /home/docker/code/
 
