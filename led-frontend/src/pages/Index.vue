@@ -4,7 +4,7 @@
       <q-card-section class="bg-primary text-white">
         <div class="text-h6">Alarm</div>
       </q-card-section>
-      <div class="row items-center">
+      <div class="column items-center">
         <q-btn
           label="Test alarm"
           @click="startAlarm()"
@@ -78,6 +78,6 @@ export default {
         responseType: 'json',
       });
     },
-  }
+  },
 };
 </script>

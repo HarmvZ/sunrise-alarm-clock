@@ -1,11 +1,16 @@
 <template>
+  <div>
     <q-color
       dark
       format-model="rgb"
       inline
       no-header
+      default-view="palette"
       @change="changeColor"
+      style="max-width:20em"
+      class="q-mx-auto q-my-sm"
     />
+  </div>
 </template>
 
 <style>
