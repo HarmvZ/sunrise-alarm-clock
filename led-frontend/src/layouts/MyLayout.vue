@@ -48,6 +48,18 @@
             <q-item-label>{{ menuItem.label }}</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item
+          clickable
+          v-ripple
+          @click="openURL(`http://${hostname}:6680/iris/`)"
+        >
+          <q-item-section avatar>
+            <q-icon name="audiotrack" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Mopidy client (Iris)</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
 
       <q-img class="absolute-top" :src="img" style="height: 150px">
@@ -59,29 +71,12 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <!-- <q-footer elevated class="bg-grey-9 flex column items-center">
-      <div class="col">
-        <q-btn
-          flat
-          round
-          color="white"
-          :icon="showPreview ? 'expand_more' : 'expand_less'"
-          @click="showPreview = !showPreview"
-          label=""
-        />
-      </div>
-      <div class="col">
-        <l-e-d-preview v-if="showPreview" class="q-pb-md"/>
-      </div>
-    </q-footer> -->
   </q-layout>
 </template>
 
 <script>
 import { openURL } from 'quasar';
 import ConnectionStatus from 'components/ConnectionStatus';
-// import LEDPreview from '../components/LEDPreview.vue';
 
 const menuList = [
   {
@@ -104,6 +99,11 @@ const menuList = [
     label: 'Animations',
     route: '/animations',
   },
+  {
+    icon: 'audiotrack',
+    label: 'Music',
+    route: '/music',
+  },
 ];
 
 export default {
@@ -114,6 +114,7 @@ export default {
       showPreview: false,
       miniState: true,
       menuList,
+      hostname: process.env.HOSTNAME,
     };
   },
   methods: {

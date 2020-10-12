@@ -69,6 +69,8 @@ module.exports = function (ctx) {
         'QSeparator',
         'QParallax',
         'QSlideTransition',
+        'QSpinner',
+        'QLinearProgress',
       ],
 
       directives: [
@@ -114,6 +116,7 @@ module.exports = function (ctx) {
       },
       env: {
         API_BASE_URL: JSON.stringify(ctx.dev ? 'http://localhost:8888/' : `http://${process.env.HOSTNAME}:8888/`),
+        HOSTNAME: JSON.stringify(ctx.dev ? 'localhost' : process.env.HOSTNAME),
       },
     },
 
