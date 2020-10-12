@@ -25,10 +25,11 @@
 <script>
 import Mopidy from 'mopidy';
 import Audio from 'components/Audio';
+import Volume from 'components/Volume';
 
 export default {
   name: 'Music',
-  components: { Audio },
+  components: { Audio, Volume },
   data () {
     return {
       connected: false,
