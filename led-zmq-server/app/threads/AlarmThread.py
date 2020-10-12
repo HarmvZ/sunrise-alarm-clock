@@ -57,7 +57,6 @@ class AlarmThread(StoppableThread):
         if not transition(start_color, final_color, int(self.steps / 2)):
             return
 
-
         # alarm_text = create_text()
         # if self.stopped():
         #     return
