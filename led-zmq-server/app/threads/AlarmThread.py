@@ -4,9 +4,8 @@ import time
 import numpy as np
 # from gtts import gTTS
 from rpi_ws281x import Color
-from settings import SOUND_FILE_PATH
+from settings import LED_DITHERING_STEPS
 # from utils.alarm_text import create_text
-from utils.core_actions import color_wipe
 from utils.stoppable_thread import StoppableThread
 
 
@@ -22,30 +21,42 @@ class AlarmThread(StoppableThread):
         :param steps: number of steps in transition
         :param timestep: time that one step takes in ms
         """
-        final_color = np.array([255, 255, 255])
-        start_color = np.array([0, 0, 0])
-        color_delta = final_color - start_color
-        for i in range(self.steps):
-            # create linear i in range 0 to 100
-            lin_range = i / (self.steps - 1) * 100
-            # create exponential range from 1 to exp(100)
-            log_range = np.exp(lin_range)
-            # create exponential range from 0 to 1
-            log_range = (log_range - 1) / (np.exp(100) - 1)
-            color = start_color + color_delta * lin_range / 100  # log_range
-            color_wipe(
-                self.strip,
-                Color(
-                    int(color[0]),
-                    int(color[1]),
-                    int(color[2])
+        def transition(start_color, final_color, steps):
+            """ Transition with dithering """
+            color_delta = final_color - start_color
+            for i in range(self.steps):
+                # create linear i in range 0 to 100
+                lin_range = i / (self.steps - 1) * 100
+                color_rgb = start_color + color_delta * lin_range / 100
+                color = Color(
+                    int(color_rgb[0]),
+                    int(color_rgb[1]),
+                    int(color_rgb[2])
                 )
-            )
-            if self.stopped():
-                return
-            time.sleep(self.timestep / 1000)
+                for i in range(4):
+                    for j in range(
+                        0,
+                        self.strip.numPixels(),
+                        LED_DITHERING_STEPS
+                    ):
+                        self.strip.setPixelColor(j + i, color)
+                    self.strip.show()
 
-            # TODO add dithering, color from black -> deep orange ->  white
+                    if self.stopped():
+                        return False
+                    time.sleep(self.timestep / (LED_DITHERING_STEPS * 1000))
+            return True
+
+        final_color = np.array([214, 108, 0])
+        start_color = np.array([0, 0, 0])
+        if not transition(start_color, final_color, int(self.steps / 2)):
+            return
+
+        start_color = np.array([214, 108, 0])
+        final_color = np.array([255, 255, 255])
+        if not transition(start_color, final_color, int(self.steps / 2)):
+            return
+
 
         # alarm_text = create_text()
         # if self.stopped():
