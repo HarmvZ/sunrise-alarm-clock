@@ -2,8 +2,10 @@
   <q-card
     class="col-12 bg-grey-9 text-center q-mt-md"
   >
-    <q-card-section class="column items-center">
-      {{ volume }}
+    <q-card-section class="bg-primary text-white">
+      <div class="text-h5">Volume</div>
+    </q-card-section>
+    <q-card-section class="column items-center q-mt-md">
       <q-linear-progress
         rounded
         size="xl"

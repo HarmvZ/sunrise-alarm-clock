@@ -2,6 +2,9 @@
   <q-card
     class="col-12 bg-grey-9 text-center q-mt-md"
   >
+    <q-card-section class="bg-primary text-white">
+      <div class="text-h5">Music</div>
+    </q-card-section>
     <q-parallax
       :src="imageURL"
       :height="250"
