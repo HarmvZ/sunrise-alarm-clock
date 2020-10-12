@@ -18,14 +18,14 @@
     </q-card-section>
 
     <q-card-section class="column items-center">
-      <div class="items-center q-mb-md">
-        <div v-if="timePosition">
-          {{ state }} at {{ timePosition / 1000 }}s
-        </div>
-        <div v-else>
-          {{ state }}
-        </div>
-      </div>
+      <q-linear-progress
+        v-if="timePosition"
+        rounded
+        size="xl"
+        :value="timePosition / trackLength"
+        color="primary"
+        label="progress"
+      />
     </q-card-section>
     <q-card-section class="column items-center">
 
@@ -46,6 +46,12 @@
           color="primary"
           icon="play_arrow"
           @click="mopidy.playback.play()"
+        />
+        <q-btn
+          v-if="state === 'paused' || state === 'playing'"
+          color="primary"
+          icon="stop"
+          @click="mopidy.playback.stop()"
         />
         <q-btn
           color="primary"
@@ -100,6 +106,8 @@ export default {
       repeat: false,
       single: false,
       random: false,
+      trackLength: 0,
+      progressInterval: null,
     };
   },
   mounted () {
@@ -131,9 +139,18 @@ export default {
     updatePlaybackState (state, timePosition) {
       this.state = state;
       this.timePosition = timePosition;
+      if (this.progressInterval !== null) {
+        clearInterval(this.progressInterval);
+      }
+      if (state === 'playing') {
+        this.progressInterval = setInterval(() => {
+          this.mopidy.playback.getTimePosition().then(t => { this.timePosition = t; });
+        }, 200);
+      }
     },
     updateCurrentTrack (track) {
       this.track = track;
+      this.trackLength = track.length;
       if (track === null) {
         return;
       }

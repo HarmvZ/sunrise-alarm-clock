@@ -38,7 +38,7 @@ export default {
   },
   mounted () {
     this.mopidy = new Mopidy({
-      webSocketUrl: 'ws://raspberrypi:6680/mopidy/ws',
+      webSocketUrl: 'ws://raspberrypi:6680/mopidy/ws', // TODO fix hostname?
     });
     this.mopidy.on('state:online', () => {
       this.connected = true;
