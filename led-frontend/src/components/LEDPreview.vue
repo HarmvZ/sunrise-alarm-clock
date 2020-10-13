@@ -1,9 +1,18 @@
 <template>
   <div>
     <table>
-      <tr v-for="(row, id) in rows" :key="id">
-        <td v-for="(col, col_id) in cols" :key="`${id}${col_id}`">
-          <div class="pixel" :ref="`pixel_${id}_${col_id}`"></div>
+      <tr
+        v-for="(row, id) in rows"
+        :key="id"
+      >
+        <td
+          v-for="(col, col_id) in cols"
+          :key="`${id}${col_id}`"
+        >
+          <div
+            :ref="`pixel_${id}_${col_id}`"
+            class="pixel"
+          />
         </td>
       </tr>
     </table>
@@ -41,17 +50,6 @@ export default {
       }
     },
   },
-  methods: {
-    async getPixels () {
-      const url = '/api/get_pixels/';
-      const response = await this.request({
-        method: 'GET',
-        url,
-        responseType: 'json',
-      });
-      return response.pixels;
-    },
-  },
   mounted () {
     this.getPixels().then(data => {
       this.pixels = data;
@@ -62,6 +60,17 @@ export default {
   },
   beforeDestroy () {
     clearInterval(this.interval);
+  },
+  methods: {
+    async getPixels () {
+      const url = '/api/get_pixels/';
+      const response = await this.request({
+        method: 'GET',
+        url,
+        responseType: 'json',
+      });
+      return response.pixels;
+    },
   },
 };
 </script>

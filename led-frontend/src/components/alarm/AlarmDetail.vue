@@ -6,8 +6,16 @@
       class="opacity-parallax"
     >
       <span class="text-h5 text-white">{{ name }}</span>
-      <q-popup-edit v-if="editable" v-model="name">
-        <q-input class=" text-h5" v-model="name" dense autofocus />
+      <q-popup-edit
+        v-if="editable"
+        v-model="name"
+      >
+        <q-input
+          v-model="name"
+          class=" text-h5"
+          dense
+          autofocus
+        />
       </q-popup-edit>
     </q-parallax>
     <q-card-section class="column items-center">
@@ -21,20 +29,20 @@
           />
         </q-item-label>
         <q-item-label
-          @click="timeDialog = editable"
           lines="1"
           class="text-weight-bold text-primary text-uppercase"
+          @click="timeDialog = editable"
         >
           <span class="cursor-pointer text-h2 text-white">{{ hour }}:{{ minute }}</span>
         </q-item-label>
         <q-item-label class="text-center">
           <q-btn
             v-if="editable"
-            @click="confirmDelete = true"
             color="grey-6"
             flat
             size="s"
             icon="delete"
+            @click="confirmDelete = true"
           />
         </q-item-label>
       </div>
@@ -46,34 +54,52 @@
           v-for="dow in dow_map"
           :key="dow.value"
           :disabled="!editable"
-          @click="toggleDow(dow.value)"
           :flat="!day_of_week.split(',').includes(dow.value)"
           :color="day_of_week.split(',').includes(dow.value) ? 'primary' : 'gray-6'"
           size="md"
           dense
           style="color: #ccc;"
+          @click="toggleDow(dow.value)"
         >
           {{ dow.label }}
         </q-btn>
       </q-item-label>
     </q-card-section>
     <q-dialog v-model="timeDialog">
-        <q-time
-          v-model="time"
-          @input="timeChanged"
-          format24h
-          dark
-        />
+      <q-time
+        v-model="time"
+        format24h
+        dark
+        @input="timeChanged"
+      />
     </q-dialog>
-    <q-dialog dark v-model="confirmDelete">
+    <q-dialog
+      v-model="confirmDelete"
+      dark
+    >
       <q-card class="bg-grey-9 text-white">
         <q-card-section class="row items-center">
-          <q-avatar icon="warning" color="negative" text-color="white" />
+          <q-avatar
+            icon="warning"
+            color="negative"
+            text-color="white"
+          />
           <span class="q-ml-sm">Are you sure you want to remove "{{ name }}"?</span>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="white" v-close-popup />
-          <q-btn flat label="Ok" color="negative" v-close-popup @click="removeAlarm(pk)" />
+          <q-btn
+            v-close-popup
+            flat
+            label="Cancel"
+            color="white"
+          />
+          <q-btn
+            v-close-popup
+            flat
+            label="Ok"
+            color="negative"
+            @click="removeAlarm(pk)"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -90,14 +116,38 @@ export default {
   name: 'AlarmDetail',
   // components: { DarkCard },
   props: {
-    pk: Number,
-    name: String,
-    hour: String,
-    minute: String,
-    enabled: Boolean,
-    day_of_week: String,
-    updateAlarm: Function,
-    removeAlarm: Function,
+    pk: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    hour: {
+      type: String,
+      required: true,
+    },
+    minute: {
+      type: String,
+      required: true,
+    },
+    enabled: {
+      type: Boolean,
+      required: true,
+    },
+    dayOfWeek: {
+      type: String,
+      required: true,
+    },
+    updateAlarm: {
+      type: Function,
+      required: true,
+    },
+    removeAlarm: {
+      type: Function,
+      required: true,
+    },
     editable: {
       type: Boolean,
       default: true,

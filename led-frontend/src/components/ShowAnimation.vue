@@ -1,6 +1,8 @@
 <template>
   <div class="column">
-    <div class="q-mt-md">Speed</div>
+    <div class="q-mt-md">
+      Speed
+    </div>
     <q-slider
       v-model="waitMs"
       :min="1"
@@ -13,10 +15,10 @@
       v-for="option in options"
       :key="option.value"
       :label="option.label"
-      @click="showAnimation(option.value)"
       color="primary"
       size="md"
       class="col-12 q-mb-md q-mx-md"
+      @click="showAnimation(option.value)"
     />
   </div>
 </template>

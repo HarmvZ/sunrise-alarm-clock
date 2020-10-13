@@ -19,12 +19,11 @@
 </style>
 
 <script>
-// import DarkCard from 'components/DarkCard';
 import AlarmDetail from 'components/alarm/AlarmDetail';
 
 export default {
   name: 'UpcommingAlarm',
-  components: { AlarmDetail }, //, DarkCard },
+  components: { AlarmDetail },
   data () {
     return {
       alarm: false,

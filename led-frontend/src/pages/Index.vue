@@ -37,7 +37,6 @@
 </style>
 
 <script>
-// import DarkCard from 'components/DarkCard';
 import UpcomingAlarm from 'components/UpcomingAlarm';
 import ChangeColor from 'components/ChangeColor';
 import ShowClock from 'components/ShowClock';
@@ -45,7 +44,7 @@ import ShowAnimation from 'components/ShowAnimation';
 
 export default {
   name: 'PageIndex',
-  components: { UpcomingAlarm, ChangeColor, ShowClock, ShowAnimation }, //, DarkCard },
+  components: { UpcomingAlarm, ChangeColor, ShowClock, ShowAnimation },
   data () {
     return {
       alarm: false,

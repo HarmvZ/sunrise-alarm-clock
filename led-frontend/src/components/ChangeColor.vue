@@ -6,9 +6,9 @@
       inline
       no-header
       default-view="palette"
-      @change="changeColor"
       style="max-width:20em"
       class="q-mx-auto q-my-sm"
+      @change="changeColor"
     />
   </div>
 </template>
@@ -22,9 +22,18 @@ import getRGBColorObject from 'src/utils/getRGBColorObject';
 export default {
   name: 'ChangeColor',
   props: {
-    transition: Boolean,
-    steps: Number,
-    timestep: Number,
+    transition: {
+      type: Boolean,
+      required: true,
+    },
+    steps: {
+      type: Number,
+      required: true,
+    },
+    timestep: {
+      type: Number,
+      required: true,
+    },
   },
   methods: {
     changeColor (value) {

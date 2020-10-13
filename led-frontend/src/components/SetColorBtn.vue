@@ -1,10 +1,10 @@
 <template>
-    <q-btn
+  <q-btn
     dense
-      :style="btnStyle()"
-      @click="changeColor()"
-      label=" "
-    />
+    :style="btnStyle()"
+    label=" "
+    @click="changeColor()"
+  />
 </template>
 
 <style>
@@ -14,9 +14,18 @@
 export default {
   name: 'SetColorBtn',
   props: {
-    red: Number,
-    green: Number,
-    blue: Number,
+    red: {
+      type: Number,
+      required: true,
+    },
+    green: {
+      type: Number,
+      required: true,
+    },
+    blue: {
+      type: Number,
+      required: true,
+    },
     transition: {
       type: Boolean,
       default: false,

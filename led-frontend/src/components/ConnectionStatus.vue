@@ -1,10 +1,10 @@
 <template>
   <q-avatar
+    ref="avatar"
     :icon="icons[status]"
     :color="colors[status]"
     text-color="white"
     size="24px"
-    ref="avatar"
   />
 </template>
 
@@ -36,6 +36,15 @@ export default {
       timer: null,
     };
   },
+  async mounted () {
+    this.status = await this.checkStatus();
+    this.timer = setInterval(async () => {
+      this.status = await this.checkStatus();
+    }, 5000);
+  },
+  beforeDestroy () {
+    clearInterval(this.timer);
+  },
   methods: {
     async checkStatus () {
       this.$refs.avatar.$el.classList.add('spin');
@@ -53,15 +62,6 @@ export default {
       this.$refs.avatar.$el.classList.remove('spin');
       return 1;
     },
-  },
-  async mounted () {
-    this.status = await this.checkStatus();
-    this.timer = setInterval(async () => {
-      this.status = await this.checkStatus();
-    }, 5000);
-  },
-  beforeDestroy () {
-    clearInterval(this.timer);
   },
 };
 </script>
