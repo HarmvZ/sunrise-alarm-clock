@@ -54,8 +54,8 @@
           v-for="dow in dow_map"
           :key="dow.value"
           :disabled="!editable"
-          :flat="!day_of_week.split(',').includes(dow.value)"
-          :color="day_of_week.split(',').includes(dow.value) ? 'primary' : 'gray-6'"
+          :flat="!dayOfWeek.split(',').includes(dow.value)"
+          :color="dayOfWeek.split(',').includes(dow.value) ? 'primary' : 'gray-6'"
           size="md"
           dense
           style="color: #ccc;"
@@ -110,11 +110,8 @@
 </style>
 
 <script>
-// import DarkCard from 'components/DarkCard';
-
 export default {
   name: 'AlarmDetail',
-  // components: { DarkCard },
   props: {
     pk: {
       type: Number,
@@ -201,13 +198,13 @@ export default {
       if (!this.editable) {
         return;
       }
-      let dow = this.day_of_week.split(',');
+      let dow = this.dayOfWeek.split(',');
       if (dow.includes(value)) {
         dow = dow.filter((dow) => dow !== value);
-        this.updateAlarm(this.pk, { day_of_week: dow.join(',') });
+        this.updateAlarm(this.pk, { dayOfWeek: dow.join(',') });
       } else {
         dow.push(value);
-        this.updateAlarm(this.pk, { day_of_week: dow.join(',') });
+        this.updateAlarm(this.pk, { dayOfWeek: dow.join(',') });
       }
     },
   },

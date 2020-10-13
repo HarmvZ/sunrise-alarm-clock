@@ -4,6 +4,7 @@
       v-for="alarm in alarms"
       :key="alarm.pk"
       v-bind="alarm"
+      :day-of-week="alarm.day_of_week"
       :update-alarm="updateAlarm"
       :remove-alarm="removeAlarm"
     />
