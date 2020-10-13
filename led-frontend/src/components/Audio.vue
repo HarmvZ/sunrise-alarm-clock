@@ -17,8 +17,8 @@
         />
         <div
           v-show="track !== null"
-          style="background: rgba(0, 0, 0, 0.2)"
-          class="column q-pa-md"
+          style="background: rgba(0, 0, 0, 0.5)"
+          class="q-pa-md"
         >
           <div class="text-h4 text-white">
             {{ trackName }}
@@ -166,7 +166,7 @@ export default {
       }
       if (state === 'playing') {
         this.progressInterval = setInterval(() => {
-          this.mopidy.playback.getTimePosition().then(t => { this.timePosition = t; });
+          this.mopidy.playback.getTimePosition().then(t => { this.timePosition = t; }, () => {});
         }, 200);
       }
       if (state === 'stopped') {
