@@ -147,13 +147,16 @@ export default {
           this.mopidy.playback.getTimePosition().then(t => { this.timePosition = t; });
         }, 200);
       }
+      if (state === 'stopped') {
+        this.track = null;
+      }
     },
     updateCurrentTrack (track) {
       this.track = track;
-      this.trackLength = track.length;
       if (track === null) {
         return;
       }
+      this.trackLength = track.length;
       this.trackName = track.name;
       this.artists = track.artists.map((a) => a.name).join(', ');
       this.albumName = track.album.name;

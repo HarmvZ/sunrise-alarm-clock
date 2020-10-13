@@ -71,6 +71,8 @@ module.exports = function (ctx) {
         'QSlideTransition',
         'QSpinner',
         'QLinearProgress',
+        'QSpinnerAudio',
+        'QSpinnerBars',
       ],
 
       directives: [

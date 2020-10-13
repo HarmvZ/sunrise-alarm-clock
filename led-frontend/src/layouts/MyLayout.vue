@@ -48,18 +48,6 @@
             <q-item-label>{{ menuItem.label }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          v-ripple
-          @click="openURL(`http://${hostname}:6680/iris/`)"
-        >
-          <q-item-section avatar>
-            <q-icon name="audiotrack" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Mopidy client (Iris)</q-item-label>
-          </q-item-section>
-        </q-item>
       </q-list>
 
       <q-img class="absolute-top" :src="img" style="height: 150px">

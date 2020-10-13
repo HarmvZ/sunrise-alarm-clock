@@ -1,22 +1,56 @@
 <template>
   <q-page class="q-px-md">
     <div
-      v-if="connected"
+      v-if="status === 0"
+      class="col-12 text-center"
+    >
+      <q-spinner
+        color="primary"
+        size="6em"
+        :thickness="2"
+        class="q-ma-xl"
+      />
+    </div>
+    <div
+      v-if="status === 1"
       class="col-12"
     >
       <Audio :mopidy="mopidy" />
       <Volume :mopidy="mopidy" />
+      <q-card
+        class="col-12 bg-grey-9 text-center q-mt-md"
+      >
+        <q-card-section class="bg-primary text-white">
+          <div class="text-h5">
+            Mopidy Iris
+          </div>
+        </q-card-section>
+        <q-card-section class="column items-center q-mt-md">
+          <q-btn
+            color="primary"
+            icon="audiotrack"
+            @click="openURL(`http://${hostname}:6680/iris/`)"
+          >
+            Open Mopidy Iris
+          </q-btn>
+        </q-card-section>
+      </q-card>
     </div>
-    <q-spinner
-      v-else
-      color="primary"
-      size="6em"
-      :thickness="2"
-      class="q-ma-xl"
-    />
-
+    <div
+      v-if="status === 2"
+      class="col-12"
+    >
+      <q-card
+        class="col-12 bg-grey-9 text-center q-mt-md"
+      >
+        <q-card-section class="">
+          <div class="">
+            MPD server connection failure
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
-
 </template>
 
 <style>
@@ -24,6 +58,7 @@
 
 <script>
 import Mopidy from 'mopidy';
+import { openURL } from 'quasar';
 import Audio from 'components/Audio';
 import Volume from 'components/Volume';
 
@@ -32,8 +67,9 @@ export default {
   components: { Audio, Volume },
   data () {
     return {
-      connected: false,
+      status: 0, // 0: pending, 1: connected, 2: connection failure
       mopidy: null,
+      hostname: process.env.HOSTNAME,
     };
   },
   mounted () {
@@ -41,8 +77,20 @@ export default {
       webSocketUrl: 'ws://raspberrypi:6680/mopidy/ws', // TODO fix hostname?
     });
     this.mopidy.on('state:online', () => {
-      this.connected = true;
+      this.status = 1;
     });
+    this.mopidy.on('state:offline', () => {
+      this.status = 2;
+      this.$q.notify({
+        message: 'Can\'t connect to MPD server',
+        position: 'top',
+        color: 'negative',
+        icon: 'report_problem',
+      });
+    });
+  },
+  methods: {
+    openURL,
   },
 };
 </script>
