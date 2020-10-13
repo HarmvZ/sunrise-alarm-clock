@@ -21,10 +21,10 @@
         <q-card-section class="column items-center q-mt-md">
           <q-btn
             color="primary"
-            icon="audiotrack"
             @click="openURL(`http://${hostname}:6680/iris/`)"
           >
-            Open Mopidy Iris
+            Open Mopidy Iris&nbsp;
+            <q-icon name="open_in_new" />
           </q-btn>
         </q-card-section>
       </card>

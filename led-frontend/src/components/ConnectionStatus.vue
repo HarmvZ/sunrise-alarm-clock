@@ -20,7 +20,7 @@ export default {
       status: 0, // 0: checking, 1: connected, 2: error
       icons: {
         0: 'import_export',
-        1: 'import_export',
+        1: 'wb_sunny',
         2: 'error',
       },
       colors: {
