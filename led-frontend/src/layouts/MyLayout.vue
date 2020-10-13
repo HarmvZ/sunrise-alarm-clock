@@ -1,15 +1,22 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="text-grey-4" style="background: #1f1f1f">
-    <q-header elevated class="bg-grey-9">
+  <q-layout
+    view="lHh Lpr lFf"
+    class="text-grey-4"
+    style="background: #1f1f1f"
+  >
+    <q-header
+      elevated
+      class="bg-grey-9"
+    >
       <q-toolbar>
         <q-btn
           flat
           dense
           round
-          @click="drawerOpen = !drawerOpen"
           aria-label="Menu"
           icon="menu"
-          />
+          @click="drawerOpen = !drawerOpen"
+        />
 
         <q-toolbar-title>
           {{ $appName }}
@@ -24,20 +31,23 @@
       show-if-above
 
       :mini="miniState"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
       mini-to-overlay
-
       :width="300"
       :breakpoint="500"
+
       content-class="bg-grey-10"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
     >
-      <q-list dark style="height: calc(100% - 150px); margin-top: 150px;">
+      <q-list
+        dark
+        style="height: calc(100% - 150px); margin-top: 150px;"
+      >
         <q-item
           v-for="(menuItem, id) in menuList"
           :key="id"
-          clickable
           v-ripple
+          clickable
           :to="menuItem.route"
           exact
         >
@@ -50,9 +60,12 @@
         </q-item>
       </q-list>
 
-      <q-img class="absolute-top" :src="img" style="height: 150px">
-        <div class="absolute-bottom bg-transparent">
-        </div>
+      <q-img
+        class="absolute-top"
+        :src="img"
+        style="height: 150px"
+      >
+        <div class="absolute-bottom bg-transparent" />
       </q-img>
     </q-drawer>
 
@@ -96,6 +109,7 @@ const menuList = [
 
 export default {
   name: 'MyLayout',
+  components: { ConnectionStatus },
   data () {
     return {
       drawerOpen: false,
@@ -104,16 +118,15 @@ export default {
       menuList,
       hostname: process.env.HOSTNAME,
     };
-  },
-  methods: {
-    openURL,
-  },
-  components: { ConnectionStatus }, //, LEDPreview },
+  }, //, LEDPreview },
   computed: {
     img () {
       const randomInt = Math.floor(Math.random() * 6) + 1;
       return `statics/alarm/${randomInt}.jpg`;
     },
+  },
+  methods: {
+    openURL,
   },
 };
 </script>

@@ -1,26 +1,20 @@
 <template>
   <q-page class="items-center q-px-md">
-    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-      <q-card-section class="bg-primary text-white">
-        <div class="text-h6">Alarm</div>
-      </q-card-section>
+    <card title="Test alarm">
       <div class="column items-center">
         <q-btn
           label="Test alarm"
-          @click="startAlarm()"
           color="primary"
           size="lg"
           class="col-12 q-ma-md"
+          @click="startAlarm()"
         />
       </div>
-    </q-card>
+    </card>
     <router-link to="/alarms">
       <UpcomingAlarm />
     </router-link>
-    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-      <q-card-section class="bg-primary text-white">
-        <div class="text-h6">Color</div>
-      </q-card-section>
+    <card title="Color">
       <div class="row items-center">
         <ChangeColor
           :transition="true"
@@ -29,23 +23,13 @@
           class="col-12"
         />
       </div>
-    </q-card>
-    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-      <q-card-section class="bg-primary text-white text-h6">
-        <div class="text-h6">
-          Animations
-        </div>
-      </q-card-section>
+    </card>
+    <card title="Animations">
       <show-animation />
-    </q-card>
-    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-      <q-card-section class="bg-primary text-white text-h6">
-        <div class="text-h6">
-          Clock
-        </div>
-      </q-card-section>
+    </card>
+    <card title="Clock">
       <show-clock />
-    </q-card>
+    </card>
   </q-page>
 </template>
 

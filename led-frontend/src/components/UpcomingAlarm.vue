@@ -1,17 +1,18 @@
 <template>
-  <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-    <q-card-section class="bg-primary text-white">
-      <div class="text-h5">Upcoming alarm</div>
-    </q-card-section>
-
+  <card title="Upcoming alarm">
     <AlarmDetail
       v-if="alarm !== false"
       v-bind="alarm"
       :editable="false"
       style="margin-top: 0;"
     />
-    <div v-else class="justify-center q-pa-md">No upcoming alarms found!</div>
-  </q-card>
+    <div
+      v-else
+      class="justify-center q-pa-md"
+    >
+      No upcoming alarms found!
+    </div>
+  </card>
 </template>
 
 <style>
@@ -29,6 +30,13 @@ export default {
       alarm: false,
     };
   },
+  mounted () {
+    this.getUpcomingAlarm().then(data => {
+      if (Object.keys(data).length !== 0) {
+        this.alarm = data;
+      }
+    });
+  },
   methods: {
     async getUpcomingAlarm () {
       const url = '/api/alarms/first_upcoming_alarm';
@@ -39,13 +47,6 @@ export default {
       });
       return response;
     },
-  },
-  mounted () {
-    this.getUpcomingAlarm().then(data => {
-      if (Object.keys(data).length !== 0) {
-        this.alarm = data;
-      }
-    });
   },
 };
 </script>

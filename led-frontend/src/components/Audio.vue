@@ -1,21 +1,41 @@
 <template>
-  <q-card
-    class="col-12 bg-grey-9 text-center q-mt-md"
+  <Card
+    title="Music"
   >
-    <q-card-section class="bg-primary text-white">
-      <div class="text-h5">Music</div>
-    </q-card-section>
     <q-parallax
-      :src="imageURL"
+      :src="track === null ? 'statics/audio.jpg' : imageURL"
       :height="250"
-      class="opacity-parallax"
+      class="parallax"
     >
+      <div>
+        <q-spinner-bars
+          v-show="state === 'playing'"
+          color="primary"
+          size="10em"
+          class="col-12"
+          style="opacity:0.5"
+        />
+        <div
+          v-show="track !== null"
+          style="background: rgba(0, 0, 0, 0.2)"
+          class="column q-pa-md"
+        >
+          <div class="text-h4 text-white">
+            {{ trackName }}
+          </div>
+          <div class="text-h5 text-white">
+            {{ artists }}
+          </div>
+          <div class="text-white">
+            {{ albumName }}
+          </div>
+        </div>
+      </div>
     </q-parallax>
-    <q-card-section class="column items-center">
-      <div class="text-h3 text-white">{{ trackName }}</div>
-      <div class="text-h4 text-white">{{ artists }}</div>
-      <div class="text-h5 text-gray-8">{{ albumName }}</div>
-    </q-card-section>
+    <q-card-section
+      v-show="track !== null"
+      class="column items-center"
+    />
 
     <q-card-section class="column items-center">
       <q-linear-progress
@@ -23,12 +43,11 @@
         rounded
         size="xl"
         :value="timePosition / trackLength"
-        color="primary"
+        color="grey-9"
         label="progress"
       />
     </q-card-section>
     <q-card-section class="column items-center">
-
       <q-btn-group>
         <q-btn
           color="primary"
@@ -63,28 +82,31 @@
     <q-card-section class="column items-center">
       <q-btn-group>
         <q-btn
-          :color="repeat ? 'primary' : ''"
+          :color="repeat ? 'primary' : 'grey-9'"
           icon="repeat"
           @click="mopidy.tracklist.setRepeat([!repeat])"
         />
         <q-btn
-          :color="single ? 'primary' : ''"
+          :color="single ? 'primary' : 'grey-9'"
           icon="repeat_one"
           @click="mopidy.tracklist.setSingle([!single])"
         />
         <q-btn
-          :color="random ? 'primary' : ''"
+          :color="random ? 'primary' : 'grey-9'"
           icon="shuffle"
           @click="mopidy.tracklist.setRandom([!random])"
         />
       </q-btn-group>
     </q-card-section>
-  </q-card>
+  </Card>
 </template>
 
 <script>
+import Card from 'components/Card';
+
 export default {
   name: 'Audio',
+  components: { Card },
   props: {
     mopidy: {
       type: Object,

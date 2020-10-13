@@ -1,10 +1,5 @@
 <template>
-  <q-card
-    class="col-12 bg-grey-9 text-center q-mt-md"
-  >
-    <q-card-section class="bg-primary text-white">
-      <div class="text-h5">Volume</div>
-    </q-card-section>
+  <card title="Volume">
     <q-card-section class="column items-center q-mt-md">
       <q-linear-progress
         rounded
@@ -13,37 +8,45 @@
         color="primary"
         label="Volume"
       />
-      </q-card-section>
+    </q-card-section>
     <q-card-section class="column items-center">
-    <q-btn-group>
-      <q-btn
-        :color="mute ? '' : 'primary'"
-        icon="volume_off"
-        @click="mopidy.mixer.setMute([!mute])"
-      />
-      <q-btn
-        color="primary"
-        icon="volume_down"
-        @click="incrementVolume(-10)"
-      >-10</q-btn>
-      <q-btn
-        color="primary"
-        icon="volume_down"
-        @click="incrementVolume(-1)"
-      >-1</q-btn>
-      <q-btn
-        color="primary"
-        icon="volume_up"
-        @click="incrementVolume(1)"
-      >+1</q-btn>
-      <q-btn
-        color="primary"
-        icon="volume_up"
-        @click="incrementVolume(10)"
-      >+10</q-btn>
+      <q-btn-group>
+        <q-btn
+          :color="mute ? 'grey-9' : 'grey-9'"
+          icon="volume_off"
+          @click="mopidy.mixer.setMute([!mute])"
+        />
+        <q-btn
+          color="grey-9"
+          icon="volume_down"
+          @click="incrementVolume(-10)"
+        >
+          -10
+        </q-btn>
+        <q-btn
+          color="grey-9"
+          icon="volume_down"
+          @click="incrementVolume(-1)"
+        >
+          -1
+        </q-btn>
+        <q-btn
+          color="grey-9"
+          icon="volume_up"
+          @click="incrementVolume(1)"
+        >
+          +1
+        </q-btn>
+        <q-btn
+          color="grey-9"
+          icon="volume_up"
+          @click="incrementVolume(10)"
+        >
+          +10
+        </q-btn>
       </q-btn-group>
     </q-card-section>
-  </q-card>
+  </card>
 </template>
 
 <script>
