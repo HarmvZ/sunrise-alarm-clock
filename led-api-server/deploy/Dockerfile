@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:16.04 as base-stage
+FROM ubuntu:20.04 as base-stage
 
 # Install required packages and remove the apt packages cache when done.
-
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
     nginx \
     supervisor \
     python3 \
