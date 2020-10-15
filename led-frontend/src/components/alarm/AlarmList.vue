@@ -4,15 +4,19 @@
       v-for="alarm in alarms"
       :key="alarm.pk"
       v-bind="alarm"
-      :updateAlarm="updateAlarm"
-      :removeAlarm="removeAlarm"
+      :day-of-week="alarm.day_of_week"
+      :update-alarm="updateAlarm"
+      :remove-alarm="removeAlarm"
     />
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[18, 18]"
+    >
       <q-btn
         fab
-        @click="addAlarm()"
         color="primary"
         icon="alarm_add"
+        @click="addAlarm()"
       />
     </q-page-sticky>
   </div>
@@ -28,6 +32,9 @@ export default {
     return {
       alarms: [],
     };
+  },
+  mounted () {
+    this.syncAlarms();
   },
   methods: {
     async syncAlarms () {
@@ -78,9 +85,6 @@ export default {
     refresh (done) {
       this.syncAlarms().then(() => done());
     },
-  },
-  mounted () {
-    this.syncAlarms();
   },
 };
 </script>

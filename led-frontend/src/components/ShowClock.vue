@@ -2,8 +2,8 @@
   <div class="col-12 column q-pa-md">
     <q-dialog v-model="fgDialog">
       <q-color
-        dark
         v-model="fg_color"
+        dark
         format-model="rgb"
         inline
         no-header
@@ -11,29 +11,35 @@
     </q-dialog>
     <q-dialog v-model="bgDialog">
       <q-color
-        dark
         v-model="bg_color"
+        dark
         format-model="rgb"
         inline
         no-header
       />
     </q-dialog>
     <div class="row q-mb-md">
-      <div class="col-2" :style="'background: ' + fg_color + ';'"></div>
+      <div
+        class="col-2"
+        :style="'background: ' + fg_color + ';'"
+      />
       <q-btn
         color="secondary"
         label="Set time color"
-        @click="fgDialog = true"
         class="col-10"
+        @click="fgDialog = true"
       />
     </div>
     <div class="row q-mb-md">
-      <div class="col-2" :style="'background: ' + bg_color + ';'"></div>
+      <div
+        class="col-2"
+        :style="'background: ' + bg_color + ';'"
+      />
       <q-btn
         color="secondary"
         label="Set background color"
-        @click="bgDialog = true"
         class="col-10"
+        @click="bgDialog = true"
       />
     </div>
     <q-btn

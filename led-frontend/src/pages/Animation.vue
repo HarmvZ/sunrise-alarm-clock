@@ -1,21 +1,11 @@
 <template>
   <q-page class="flex flex-center row">
-    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-      <q-card-section class="bg-primary text-white text-h6">
-        <div class="text-h6">
-          Animations
-        </div>
-      </q-card-section>
+    <card title="Animations">
       <show-animation />
-    </q-card>
-    <q-card class="col-12 bg-grey-9 text-center q-mt-md">
-      <q-card-section class="bg-primary text-white text-h6">
-        <div class="text-h6">
-          Clock
-        </div>
-      </q-card-section>
+    </card>
+    <card title="Clock">
       <show-clock />
-    </q-card>
+    </card>
   </q-page>
 </template>
 

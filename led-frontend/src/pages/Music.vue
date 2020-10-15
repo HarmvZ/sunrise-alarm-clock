@@ -17,24 +17,17 @@
     >
       <Audio :mopidy="mopidy" />
       <Volume :mopidy="mopidy" />
-      <q-card
-        class="col-12 bg-grey-9 text-center q-mt-md"
-      >
-        <q-card-section class="bg-primary text-white">
-          <div class="text-h5">
-            Mopidy Iris
-          </div>
-        </q-card-section>
+      <card title="Mopidy Iris">
         <q-card-section class="column items-center q-mt-md">
           <q-btn
             color="primary"
-            icon="audiotrack"
             @click="openURL(`http://${hostname}:6680/iris/`)"
           >
-            Open Mopidy Iris
+            Open Mopidy Iris&nbsp;
+            <q-icon name="open_in_new" />
           </q-btn>
         </q-card-section>
-      </q-card>
+      </card>
     </div>
     <div
       v-if="status === 2"

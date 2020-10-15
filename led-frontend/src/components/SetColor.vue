@@ -28,8 +28,14 @@ export default {
   components: { SetColorBtn },
   props: {
     transition: Boolean,
-    steps: Number,
-    timestep: Number,
+    steps: {
+      type: Number,
+      required: true,
+    },
+    timestep: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     colors () {
