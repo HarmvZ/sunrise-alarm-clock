@@ -91,7 +91,7 @@ export default {
       this.mopidy.mixer.setVolume([v]);
     },
     changeVolume (v) {
-      this.mopidy.mixer.setVolume(v);
+      this.mopidy.mixer.setVolume([v]);
     },
   },
 };
