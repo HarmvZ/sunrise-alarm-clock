@@ -74,6 +74,8 @@ module.exports = function (ctx) {
         'QLinearProgress',
         'QSpinnerAudio',
         'QSpinnerBars',
+        'QExpansionItem',
+        'QPopupProxy',
       ],
 
       directives: [
