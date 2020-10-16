@@ -23,6 +23,7 @@
         </q-toolbar-title>
 
         <connection-status />
+        <mopidy-connection-status />
       </q-toolbar>
     </q-header>
 
@@ -78,6 +79,7 @@
 <script>
 import { openURL } from 'quasar';
 import ConnectionStatus from 'components/ConnectionStatus';
+import MopidyConnectionStatus from 'components/MopidyConnectionStatus';
 
 const menuList = [
   {
@@ -109,7 +111,7 @@ const menuList = [
 
 export default {
   name: 'MyLayout',
-  components: { ConnectionStatus },
+  components: { MopidyConnectionStatus, ConnectionStatus },
   data () {
     return {
       drawerOpen: false,

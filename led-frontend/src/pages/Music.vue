@@ -50,7 +50,6 @@
 </style>
 
 <script>
-import Mopidy from 'mopidy';
 import { openURL } from 'quasar';
 import Audio from 'components/Audio';
 import Volume from 'components/Volume';
@@ -60,27 +59,10 @@ export default {
   components: { Audio, Volume },
   data () {
     return {
-      status: 0, // 0: pending, 1: connected, 2: connection failure
-      mopidy: null,
+      status: window.mopidyStatus,
+      mopidy: window.mopidy,
       hostname: process.env.HOSTNAME,
     };
-  },
-  mounted () {
-    this.mopidy = new Mopidy({
-      webSocketUrl: 'ws://raspberrypi:6680/mopidy/ws', // TODO fix hostname?
-    });
-    this.mopidy.on('state:online', () => {
-      this.status = 1;
-    });
-    this.mopidy.on('state:offline', () => {
-      this.status = 2;
-      this.$q.notify({
-        message: 'Can\'t connect to MPD server',
-        position: 'top',
-        color: 'negative',
-        icon: 'report_problem',
-      });
-    });
   },
   methods: {
     openURL,
