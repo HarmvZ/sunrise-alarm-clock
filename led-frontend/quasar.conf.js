@@ -76,6 +76,8 @@ module.exports = function (ctx) {
         'QSpinnerBars',
         'QExpansionItem',
         'QPopupProxy',
+        'QMarkupTable',
+        'QInnerLoading',
       ],
 
       directives: [
