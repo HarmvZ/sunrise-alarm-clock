@@ -17,6 +17,68 @@
     >
       <Audio :mopidy="mopidy" />
       <Volume :mopidy="mopidy" />
+      <card title="Music search">
+        <MusicSearch @track-clicked="openTrackActions" />
+        <q-dialog
+          v-model="trackActions"
+        >
+          <q-card>
+            <q-card-section class="q-pt-none">
+              <q-markup-table>
+                <thead>
+                  <tr>
+                    <th class="text-right">
+                      Action
+                    </th>
+                    <th class="text-left">
+                      Song
+                    </th>
+                    <th class="text-left">
+                      Artists
+                    </th>
+                    <th class="text-left">
+                      Album
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="track in tracks"
+                    :key="track.uri"
+                  >
+                    <td class="text-right">
+                      <q-btn
+                        icon="play_arrow"
+                        @click="playTrack(track.uri)"
+                      />
+                    </td>
+                    <td class="text-left">
+                      {{ track.name }}
+                    </td>
+                    <td class="text-left">
+                      {{ track.artists.map(a => a.name).join(', ') }}
+                    </td>
+                    <td class="text-left">
+                      {{ track.album.name }}
+                    </td>
+                  </tr>
+                </tbody>
+              </q-markup-table>
+            </q-card-section>
+
+            <q-card-actions
+              align="right"
+              class="bg-white text-teal"
+            >
+              <q-btn
+                v-close-popup
+                flat
+                label="OK"
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+      </card>
       <card title="Mopidy Iris">
         <q-card-section class="column items-center q-mt-md">
           <q-btn
@@ -53,19 +115,43 @@
 import { openURL } from 'quasar';
 import Audio from 'components/Audio';
 import Volume from 'components/Volume';
+import MusicSearch from 'components/music/MusicSearch';
 
 export default {
   name: 'Music',
-  components: { Audio, Volume },
+  components: { Audio, Volume, MusicSearch },
   data () {
     return {
       status: window.mopidyStatus,
       mopidy: window.mopidy,
       hostname: process.env.HOSTNAME,
+      trackActions: false,
+      tracks: [],
+      trackImageUris: {},
     };
   },
   methods: {
     openURL,
+    openTrackActions (uri) {
+      window.mopidy.library.lookup({ uris: [uri] }).then(tracks => {
+        this.tracks = [];
+        for (const ts of Object.values(tracks)) {
+          this.tracks.push(...ts);
+        }
+        const uris = this.tracks.map(t => t.uri);
+        window.mopidy.library.getImages([uris]).then(images => {
+          for (const [uri, image] of Object.entries(images)) {
+            this.trackImageUris[uri] = image;
+          }
+          this.trackActions = true;
+        });
+      });
+    },
+    playTrack (uri) {
+      window.mopidy.tracklist.add({ uris: [uri], at_position: 1 }).then(tlTracks => {
+        window.mopidy.playback.play({ tl_track: tlTracks[tlTracks.length - 1] });
+      });
+    },
   },
 };
 </script>
