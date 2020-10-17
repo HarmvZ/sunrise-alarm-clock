@@ -59,6 +59,16 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <q-inner-loading
+      dark
+      :showing="loading"
+    >
+      <q-spinner
+        size="50px"
+        color="primary"
+      />
+    </q-inner-loading>
   </div>
 </template>
 
@@ -69,6 +79,7 @@ export default {
   components: { MusicSearch },
   data () {
     return {
+      loading: false,
       status: window.mopidyStatus,
       mopidy: window.mopidy,
       trackActions: false,
@@ -78,6 +89,7 @@ export default {
   },
   methods: {
     openTrackActions (uri) {
+      this.loading = true;
       window.mopidy.library.lookup({ uris: [uri] }).then(tracks => {
         this.tracks = [];
         for (const ts of Object.values(tracks)) {
@@ -89,6 +101,7 @@ export default {
             this.trackImageUris[uri] = image;
           }
           this.trackActions = true;
+          this.loading = false;
         });
       });
     },

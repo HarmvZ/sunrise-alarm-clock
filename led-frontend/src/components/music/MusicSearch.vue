@@ -16,6 +16,15 @@
       class="text-left"
       @track-clicked="$emit('track-clicked', $event)"
     />
+    <q-inner-loading
+      dark
+      :showing="loading"
+    >
+      <q-spinner
+        size="50px"
+        color="primary"
+      />
+    </q-inner-loading>
   </div>
 </template>
 
@@ -26,6 +35,7 @@ export default {
   components: { SearchResultList },
   data () {
     return {
+      loading: false,
       musicSearch: '',
       searchResults: {},
       imageUris: {},
@@ -34,6 +44,7 @@ export default {
   watch: {
     musicSearch: function (val) {
       if (val !== '') {
+        this.loading = true;
         window.mopidy.library.search({ query: { artist: [val] } }).then(r => {
           this.searchResults = r[0];
           const uris = [];
@@ -46,6 +57,7 @@ export default {
             for (const [uri, image] of Object.entries(r)) {
               this.$set(this.imageUris, uri, image);
             }
+            this.loading = false;
           });
         });
       }
