@@ -13,7 +13,10 @@
       </q-avatar>
     </q-item-section>
 
-    <q-item-section no-wrap>
+    <q-item-section
+      no-wrap
+      class="ellipsis"
+    >
       <q-item-label>{{ item.name }}</q-item-label>
       <q-item-label
         v-if="'artists' in item"
@@ -27,9 +30,6 @@
       >
         {{ item.album.name }}
       </q-item-label>
-    </q-item-section>
-    <q-item-section>
-      <slot />
     </q-item-section>
   </q-item>
 </template>

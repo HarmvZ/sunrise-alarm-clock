@@ -2,7 +2,7 @@
   <div>
     <q-input
       v-model="musicSearch"
-      label="Search"
+      label="Search artist, album, track..."
       debounce="500"
       dark
     >

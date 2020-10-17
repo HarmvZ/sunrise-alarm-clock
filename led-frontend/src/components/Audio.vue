@@ -1,6 +1,6 @@
 <template>
   <Card
-    title="Music"
+    title="Now playing"
   >
     <q-parallax
       :src="track === null ? 'statics/audio.jpg' : imageURL"
