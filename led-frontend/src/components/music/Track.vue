@@ -1,9 +1,9 @@
 <template>
   <q-item
-    v-ripple
-    clickable
+    :v-ripple="clickable"
+    :clickable="clickable"
     dark
-    @click="$emit('click')"
+    @click="clickable ? $emit('click') : null"
   >
     <q-item-section
       avatar
@@ -25,7 +25,7 @@
         {{ artists }}
       </q-item-label>
       <q-item-label
-        v-if="'album' in item"
+        v-if="false && 'album' in item"
         overline
       >
         {{ item.album.name }}
@@ -44,6 +44,10 @@ export default {
     imageUri: {
       type: String,
       required: true,
+    },
+    clickable: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {

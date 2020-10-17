@@ -5,137 +5,97 @@
       caption="Set transition colors"
       icon="palette"
     >
-      <ColorTransitionSelect />
+      <ColorTransitionSelect class="q-ma-md" />
     </card>
     <card
       title="Music"
       caption="Set music"
       icon="audio_track"
     >
-      <q-expansion-item
-        default-opened
-        expand-separator
+      <q-card
+        class="q-pa-md"
+        flat
         dark
-        icon="equalizer"
-        label="Music"
-        caption="Set music or sounds to play"
+        bordered
       >
-        <div class="q-pa-md">
-          <q-expansion-item
-            expand-separator
-            dark
-            label="Playlist"
-          >
-            <div class="q-py-md">
-              <q-list
-                v-if="playlists.length > 0"
-                bordered
-                dark
-                separator
-              >
-                <q-item-label header>
-                  Playlists
-                </q-item-label>
-                <q-separator />
-                <q-item
-                  v-for="item in playlists.slice(0,10)"
-                  :key="item.uri"
-                  dark
-                >
-                  <q-item-section
-                    top
-                    avatar
-                  >
-                    <q-avatar rounded>
-                      <img :src="playlistImageURIs[item.uri][0].uri">
-                    </q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label>{{ item.name }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-          </q-expansion-item>
-        </div>
-        <MusicSelectAction
-          class="q-pa-md"
-          @play-now="playTrackNow($event)"
-          @add-to-playlist="addTrackToPlaylistFirst($event)"
+        <q-card-section
+          horizontal
+          dark
+          class="justify-between"
         >
-          <template v-slot:default="slotProps">
-            <q-btn
-              label="Add"
-              icon="library_add"
-              @click="addTrackToList(slotProps.track.uri)"
+          <q-card-section class="q-pt-xs">
+            <div class="text-overline">
+              Playlist
+            </div>
+            <div class="text-h5 q-mt-sm q-mb-xs">
+              {{ playlist.name }}
+            </div>
+          </q-card-section>
+          <q-card-section class="col-5 flex flex-center">
+            <q-img
+              class="rounded-borders"
+              :src="playlist.imageUri"
             />
-          </template>
-        </MusicSelectAction>
-      </q-expansion-item>
+          </q-card-section>
+        </q-card-section>
+
+        <q-card-actions>
+          <q-btn
+            label="Choose playlist"
+            icon="queue_music"
+            dark
+            color="grey-9"
+            class="full-width"
+          >
+            <q-popup-proxy
+              ref="playlistpopup"
+              dark
+              class="full-width row justify-center bg-black"
+            >
+              <Playlists @playlist-click="onPlaylistClick" />
+            </q-popup-proxy>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
     </card>
     <card
       title="Volume progression"
       caption="Set volume progression"
       icon="volume_up"
     >
-      <q-expansion-item
-        default-opened
-        expand-separator
-        dark
-        icon="volume_up"
-        label="Volume"
-        caption="Set volume progress"
-      >
-        <VolumeTransitionSelect />
-      </q-expansion-item>
+      <VolumeTransitionSelect class="q-ma-md" />
     </card>
   </div>
 </template>
 
-<style>
-</style>
-
 <script>
 import VolumeTransitionSelect from 'src/components/VolumeTransitionSelect';
 import ColorTransitionSelect from 'src/components/ColorTransitionSelect';
+import Playlists from 'src/components/music/Playlists';
 
 export default {
   name: 'AlarmConfig',
-  components: { VolumeTransitionSelect, ColorTransitionSelect },
-  props: {
-  },
+  components: { VolumeTransitionSelect, Playlists, ColorTransitionSelect },
   data () {
     return {
-
       mopidy: window.mopidy,
       mopidyStatus: window.mopidyStatus,
-      playlists: [],
-      playlistImageURIs: {},
-      tracks: [],
-
+      playlist: {
+        name: 'None',
+        imageUrl: '',
+      },
+      playlistUri: '',
     };
   },
-  computed: {
-
-  },
   watch: {
-    playlists: function (val) {
-      const uris = val.map(pl => pl.uri);
-      window.mopidy.library.getImages([uris]).then(r => { this.playlistImageURIs = r; });
-    },
   },
   mounted () {
-    if (this.mopidyStatus !== 1) {
-      return;
-    }
-    this.mopidy.playlists.asList().then(pl => {
-      this.playlists = pl;
-    });
   },
   methods: {
-    addTrackToList (track) {
-      this.tracks.push(track.uri);
+    onPlaylistClick (playlist) {
+      this.playlist = playlist;
+      this.playlistUri = playlist.uri;
+      this.$refs.playlistpopup.hide();
     },
     triggerChange () {
       // TODO
@@ -143,11 +103,3 @@ export default {
   },
 };
 </script>
-<style>
-.q-parallax.opacity-parallax .q-parallax__media {
-  background:#000;
-}
-.q-parallax.opacity-parallax .q-parallax__media img {
-  opacity: .2;
-}
-</style>
