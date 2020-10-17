@@ -6,6 +6,7 @@
     text-color="white"
     size="24px"
     :class="mopidyStatus === 0 ? 'spin' : ''"
+    rounded
   />
 </template>
 

@@ -14,6 +14,7 @@
       >
         <q-item
           dark
+          class="bg-grey-9"
         >
           <q-item-section
             no-wrap

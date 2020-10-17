@@ -22,7 +22,7 @@
           {{ $appName }}
         </q-toolbar-title>
 
-        <connection-status />
+        <connection-status class="q-mr-sm" />
         <mopidy-connection-status />
       </q-toolbar>
     </q-header>
@@ -91,6 +91,11 @@ const menuList = [
     icon: 'alarm',
     label: 'Alarms',
     route: '/alarms',
+  },
+  {
+    icon: 'alarm',
+    label: 'Alarm settings',
+    route: '/alarm-settings',
   },
   {
     icon: 'color_lens',
