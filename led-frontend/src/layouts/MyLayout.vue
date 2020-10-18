@@ -93,11 +93,6 @@ const menuList = [
     route: '/alarms',
   },
   {
-    icon: 'alarm',
-    label: 'Alarm settings',
-    route: '/alarm-settings',
-  },
-  {
     icon: 'color_lens',
     label: 'Color',
     route: '/colors',
