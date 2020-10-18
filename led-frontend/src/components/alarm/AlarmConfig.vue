@@ -41,7 +41,17 @@
 
         <q-card-actions>
           <q-btn
-            label="Choose playlist"
+            v-if="playlistUri !== ''"
+            label="Edit playlist"
+            icon="open_in_new"
+            class="full-width q-mb-sm"
+            dark
+            color="grey-9"
+            @click="openURL(`http://${hostname}:6680/iris/playlist/${playlistUri}`)"
+          />
+
+          <q-btn
+            label="Set playlist"
             icon="queue_music"
             dark
             color="grey-9"
@@ -72,6 +82,7 @@
 import VolumeTransitionSelect from 'src/components/VolumeTransitionSelect';
 import ColorTransitionSelect from 'src/components/ColorTransitionSelect';
 import Playlists from 'src/components/music/Playlists';
+import { openURL } from 'quasar';
 
 export default {
   name: 'AlarmConfig',
@@ -100,6 +111,7 @@ export default {
     triggerChange () {
       // TODO
     },
+    openURL,
   },
 };
 </script>
