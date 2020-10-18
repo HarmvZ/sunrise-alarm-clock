@@ -1,10 +1,11 @@
 from django.http import HttpResponse, JsonResponse, Http404
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
-from alarms.models import Alarm
+from alarms.models import Alarm, AlarmConfig
 from api.serializers import (
     ColorSerializer,
     TransitionColorSerializer,
@@ -12,11 +13,12 @@ from api.serializers import (
     AnimationSerializer,
     AlarmSerializer,
     StartAlarmSerializer,
+    AlarmConfigSerializer,
 )
 from api.utils import bit24_to_3_bit8
 from api.zmq_client import ZMQClient
 
-# Create your views here.
+
 @csrf_exempt
 def status_view(request):
     return HttpResponse("", status=200)
@@ -35,6 +37,7 @@ class AlarmViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(alarms[0])
         return JsonResponse(serializer.data)
 
+
 @api_view(["GET"])
 def get_pixels(request):
     zmqc = ZMQClient()
@@ -49,9 +52,7 @@ def abstract_view(request, fn_name, Serializer, kwarg_keys=[]):
     if serializer.is_valid():
         kwargs = {}
         for kwarg_key in kwarg_keys:
-            kwargs.update({
-                kwarg_key: serializer.data[kwarg_key]
-            })
+            kwargs.update({kwarg_key: serializer.data[kwarg_key]})
         zmqc = ZMQClient()
         zmqc.perform_request(fn_name, **kwargs)
         success = True
@@ -62,47 +63,43 @@ def abstract_view(request, fn_name, Serializer, kwarg_keys=[]):
 
     return JsonResponse(data, status=status)
 
+
 @api_view(["POST"])
 def set_color(request):
-    return abstract_view(
-        request, 
-        "fill", 
-        ColorSerializer, 
-        ["r", "g", "b"]
-    )
+    return abstract_view(request, "fill", ColorSerializer, ["r", "g", "b"])
+
 
 @api_view(["POST"])
 def transition_color(request):
     return abstract_view(
-        request, 
-        "transition_to_color", 
-        TransitionColorSerializer, 
-        ["r", "g", "b", "steps", "timestep"]
+        request,
+        "transition_to_color",
+        TransitionColorSerializer,
+        ["r", "g", "b", "steps", "timestep"],
     )
-    
+
+
 @api_view(["POST"])
 def show_clock(request):
-    return abstract_view(
-        request, 
-        "show_time", 
-        ClockSerializer, 
-        ["fg", "bg"]
-    )
-    
+    return abstract_view(request, "show_time", ClockSerializer, ["fg", "bg"])
+
+
 @api_view(["POST"])
 def show_animation(request):
     return abstract_view(
-        request, 
-        "animation", 
-        AnimationSerializer, 
-        ["animation", "wait_ms"]
+        request, "animation", AnimationSerializer, ["animation", "wait_ms"]
     )
 
+
 @api_view(["POST"])
-def start_alarm(request):
-    return abstract_view(
-        request, 
-        "start_alarm", 
-        StartAlarmSerializer, 
-        ["steps", "timestep"]
-    )
+def start_alarm(request, alarm_config_pk):
+    alarm_config = get_object_or_404(AlarmConfig, pk=alarm_config_pk)
+    kwargs = AlarmConfigSerializer(alarm_config).data
+    zmqc = ZMQClient()
+    zmqc.perform_request("start_alarm", **kwargs)
+    return JsonResponse({"success": True}, status=200)
+
+
+class AlarmConfigViewSet(viewsets.ModelViewSet):
+    queryset = AlarmConfig.objects.all()
+    serializer_class = AlarmConfigSerializer
