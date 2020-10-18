@@ -50,7 +50,7 @@ export default {
   watch: {
     playlists: function (val) {
       const uris = val.map(pl => pl.uri);
-      window.mopidy.library.getImages([uris]).then(r => { this.imageUris = r; });
+      this.mopidy.library.getImages([uris]).then(r => { this.imageUris = r; });
     },
   },
   mounted () {

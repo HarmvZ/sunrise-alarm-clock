@@ -1,91 +1,85 @@
 <template>
-  <div>
+  <div class="q-py-md row justify-evenly text-grey-6">
     <ChooseColorPopup
-      v-model="startingColor"
-      label="Starting color"
+      :value="arrayToRgb(colors[0])"
       icon="colorize"
-      class="q-my-md"
+      @input="changeColor(0, $event)"
     />
-
-    <div class="q-my-md">
+    <template
+      v-for="(c, n) in colors.slice(1, colors.length -1)"
+    >
+      <q-icon
+        :key="'arrow-' + n"
+        name="arrow_downward"
+        style="font-size: 2em"
+      />
       <ChooseColorPopup
-        v-for="n in nTransitionColors"
-        :key="n"
-        v-model="transitionColors[n-1]"
-        :label="`Transition color ${n}`"
+        :key="`${arrayToRgb(c)}_${n}`"
+        :value="arrayToRgb(c)"
+        :removable="true"
         icon="colorize"
         color="grey-9"
-        class="full-width"
+        @remove="removeColor(n)"
+        @input="changeColor(n + 1, $event)"
       />
-      <q-btn
-        v-if="isColorAddable"
-        icon="add"
-        label="Add transition color"
-        color="grey-9"
-        class="full-width"
-        @click="nTransitionColors += 1"
-      />
-    </div>
-    <ChooseColorPopup
-      v-model="finishColor"
-      label="Finish color"
-      icon="colorize"
-      class="q-my-md"
+    </template>
+    <q-icon
+      name="arrow_downward"
+      style="font-size: 2em"
     />
-    <div class="q-py-md row justify-evenly">
-      <template
-        v-for="(c, idx) in colors"
-      >
-        <div
-          :key="idx"
-          class="display-inline"
-          :style="{
-            width: '3em',
-            height: '3em',
-            backgroundColor: c,
-          }"
-        />
-        <q-icon
-          v-if="idx + 1 < colors.length"
-          :key="`${idx}-arrow`"
-          name="forward"
-          style="font-size: 3em"
-          color="grey-9"
-        />
-      </template>
-    </div>
+    <q-btn
+      icon="add"
+      label=""
+      color="grey-9"
+      class="full-width"
+      @click="addColor()"
+    />
+    <q-icon
+      name="arrow_downward"
+      style="font-size: 2em"
+    />
+    <ChooseColorPopup
+      :value="arrayToRgb(colors[colors.length - 1])"
+      icon="colorize"
+      @input="changeColor(colors.length - 1, $event)"
+    />
   </div>
 </template>
 <script>
 import ChooseColorPopup from 'src/components/ChooseColorPopup';
-import getRGBColorObject from 'src/utils/getRGBColorObject';
+import { arrayToRgb, rgbToArray } from 'src/utils/colors';
 
 export default {
   components: { ChooseColorPopup },
-  data () {
-    return {
-      nTransitionColors: 0,
-      startingColor: 'rgb(0, 0, 0)',
-      finishColor: 'rgb(255, 255, 255)',
-      transitionColors: [],
-    };
+  props: {
+    colors: {
+      type: Array,
+      required: true,
+    },
   },
-  computed: {
-    colors () {
-      return [
-        this.startingColor,
-        ...this.transitionColors,
-        this.finishColor,
+  methods: {
+    arrayToRgb,
+    rgbToArray,
+    removeColor (n) {
+      const newColors = [
+        ...this.colors.slice(0, n + 1),
+        ...this.colors.slice(n + 2),
       ];
+      this.$emit('update', { colors: newColors });
     },
-    colorsObj () {
-      return this.colors.map(c => getRGBColorObject(c));
+    changeColor (index, c) {
+      const newColors = this.colors.slice();
+      newColors[index] = this.rgbToArray(c);
+      this.$emit('update', { colors: newColors });
     },
-    isColorAddable () {
-      return (
-        this.transitionColors.filter(v => typeof (v) === 'undefined').length === 0 &&
-        this.nTransitionColors === this.transitionColors.length
-      );
+    addColor () {
+      const cLen = this.colors.length;
+      const newColors = [
+        ...this.colors.slice(0, cLen - 1),
+        [255, 255, 255],
+        this.colors[cLen - 1],
+      ];
+      this.$emit('update', { colors: newColors });
     },
   },
 };

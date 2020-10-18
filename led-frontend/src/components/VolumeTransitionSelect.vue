@@ -1,26 +1,26 @@
 <template>
   <div>
-    <div class="q-py-md">
+    <div class="q-py-md row justify-between">
       <q-btn
-        label="Starting volume"
-        icon="colorize"
+        :label="`Start: ${volumes[0][1]}%`"
         color="grey-9"
-        class="full-width"
       >
         <volume-slider
-          :volume="startingVolume[1]"
+          :volume="volumes[0][1]"
           :time-changeable="false"
-          :time="startingVolume[0]"
-          @change-volume="$set(startingVolume, 1, $event)"
+          :time="volumes[0][0]"
+          @change-volume="changeVolume(0, $event)"
         />
       </q-btn>
-    </div>
-    <div class="q-my-md">
+      <!-- <div
+      v-if="false"
+      class="q-my-md"
+    >
       <q-btn
         v-for="n in nTransitionVolumes"
         :key="n"
         :label="`Transition volume ${n}`"
-        icon="colorize"
+        icon="volume_up"
         color="grey-9"
         class="full-width"
       >
@@ -40,23 +40,23 @@
         class="full-width"
         @click="addVolumeTransition()"
       />
-    </div>
-    <div class="q-my-md">
+    </div> -->
       <q-btn
-        label="Finish volume"
-        icon="colorize"
+        :label="`End: ${volumes[volumes.length -1][1]}%`"
         color="grey-9"
-        class="full-width"
       >
         <volume-slider
-          :volume="finishVolume[1]"
+          :volume="volumes[volumes.length -1][1]"
           :time-changeable="false"
-          :time="finishVolume[0]"
-          @change-volume="$set(finishVolume, 1, $event)"
+          :time="volumes[volumes.length - 1][0]"
+          @change-volume="changeVolume(volumes.length - 1, $event)"
         />
       </q-btn>
     </div>
-    <div class="q-py-md row justify-evenly">
+    <div
+      v-if="false"
+      class="q-py-md row justify-evenly"
+    >
       <template
         v-for="(v, idx) in volumes"
       >
@@ -96,22 +96,19 @@ import VolumeSlider from 'src/components/VolumeSlider';
 
 export default {
   components: { VolumeSlider },
+  props: {
+    volumes: {
+      type: Array,
+      required: true,
+    },
+  },
   data () {
     return {
-      startingVolume: [0, 0],
-      finishVolume: [100, 100],
       nTransitionVolumes: 0,
       transitionVolumes: [],
     };
   },
   computed: {
-    volumes () {
-      return [
-        this.startingVolume,
-        ...this.transitionVolumes,
-        this.finishVolume,
-      ];
-    },
     isVolumeAddable () {
       return (
         this.transitionVolumes.filter(v => v.length === 0).length === 0 &&
@@ -123,6 +120,11 @@ export default {
     addVolumeTransition () {
       this.nTransitionVolumes += 1;
       this.transitionVolumes.push([50, 50]);
+    },
+    changeVolume (index, volume) {
+      const newVolumes = this.volumes.slice();
+      newVolumes[index][1] = volume;
+      this.$emit('update', { volumes: newVolumes });
     },
   },
 };

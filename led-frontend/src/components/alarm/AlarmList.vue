@@ -8,21 +8,13 @@
       :update-alarm="updateAlarm"
       :remove-alarm="removeAlarm"
     />
-    <q-expansion-item
+    <AlarmConfigDetail
       v-for="alarmSetting in alarmSettings"
       :key="alarmSetting.pk"
-      expand-separator
-      dark
-      icon="alarm"
-      :label="`Alarm ${alarmSetting.pk} settings`"
-      :caption="`Start with /api/start_alarm/${alarmSetting.pk}/`"
-    >
-      <alarm-config
-        v-bind="alarmSetting"
-        :update="updateAlarmSetting"
-        :remove="removeAlarmSetting"
-      />
-    </q-expansion-item>
+      :alarm-setting="alarmSetting"
+      :update="updateAlarmSetting"
+      :remove="removeAlarmSetting"
+    />
     <q-page-sticky
       position="bottom-right"
       :offset="[18, 18]"
@@ -49,12 +41,12 @@
 </template>
 
 <script>
-import AlarmConfig from 'components/alarm/AlarmConfig';
 import AlarmDetail from 'components/alarm/AlarmDetail';
+import AlarmConfigDetail from 'components/alarm/AlarmConfigDetail';
 
 export default {
   name: 'AlarmList',
-  components: { AlarmDetail, AlarmConfig },
+  components: { AlarmConfigDetail, AlarmDetail },
   data () {
     return {
       alarms: [],
@@ -147,11 +139,17 @@ export default {
     },
     async updateAlarmSetting (pk, changes) {
       await this.updateModel('alarm-settings', pk, changes);
-      this.syncAlarms();
+      this.syncAlarmSettings();
     },
 
     refresh (done) {
       this.syncAlarms().then(() => this.syncAlarmSettings().then(() => this.done()));
+    },
+
+    // Other methods
+    getRandomAlarmImg () {
+      const randomInt = Math.floor(Math.random() * 6) + 1;
+      return `statics/alarm/${randomInt}.jpg`;
     },
   },
 };

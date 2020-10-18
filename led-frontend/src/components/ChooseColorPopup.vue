@@ -1,25 +1,35 @@
 <template>
-  <q-btn
-    :label="label"
-    :icon="icon"
-    color="grey-9"
-    class="full-width"
-  >
-    <q-popup-proxy
-      dark
-      class="full-width row justify-center"
+  <q-btn-group class="full-width row">
+    <q-btn
+      icon="edit"
+      :style="{
+        backgroundColor: value
+      }"
+      rounded
+      class="col"
     >
-      <q-color
-        v-model="startingColor"
+      <q-popup-proxy
         dark
-        format-model="rgb"
-        inline
-        no-header
-        default-view="palette"
-        @change="$emit('input', startingColor)"
-      />
-    </q-popup-proxy>
-  </q-btn>
+        class="full-width row justify-center"
+      >
+        <q-color
+          :value="value"
+          dark
+          format-model="rgb"
+          inline
+          no-header
+          default-view="palette"
+          @change="$emit('input', $event)"
+        />
+      </q-popup-proxy>
+    </q-btn>
+    <q-btn
+      v-if="removable === true"
+      icon="delete"
+      color="negative"
+      @click="$emit('remove')"
+    />
+  </q-btn-group>
 </template>
 <script>
 export default {
@@ -27,17 +37,16 @@ export default {
     value: { type: String, required: true },
     label: {
       type: String,
-      required: true,
+      default: '',
     },
     icon: {
       type: String,
       default: '',
     },
-  },
-  data () {
-    return {
-      startingColor: this.value,
-    };
+    removable: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
