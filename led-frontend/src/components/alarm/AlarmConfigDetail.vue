@@ -46,6 +46,7 @@
           label="Start alarm"
           color="primary"
           class="full-width q-mb-sm"
+          @click="startAlarm()"
         />
         <q-btn
           dark
@@ -163,10 +164,13 @@ export default {
   },
   methods: {
     arrayToRgb,
-    timeChanged (value) {
-      this.timeDialog = false;
-      const [hour, minute] = value.split(':');
-      this.updateAlarm(this.pk, { hour, minute });
+    startAlarm () {
+      const url = `/api/start_alarm/${this.alarmSetting.pk}/`;
+      this.request({
+        method: 'POST',
+        url,
+        responseType: 'json',
+      });
     },
   },
 };
