@@ -62,8 +62,7 @@ class StripActions:
         animation.start()
         return animation
 
-    def start_alarm(self, strip, steps=1800, timestep=100):
-        alarm = AlarmThread(strip, steps=steps, timestep=timestep)
+    def start_alarm(self, strip, **kwargs):
+        alarm = AlarmThread(strip, **kwargs)
         alarm.start()
         return alarm
-
