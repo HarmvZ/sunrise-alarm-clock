@@ -12,18 +12,22 @@
         {{ `Endpoint: /api/start_alarm/${alarmSetting.pk}/` }}
       </div>
     </q-parallax>
+    <div class="row">
+      <div
+        v-for="n in (alarmSetting.colors.length - 1)"
+        :key="`${arrayToRgb(alarmSetting.colors[n - 1])}_to_${arrayToRgb(alarmSetting.colors[n])}_${n}`"
+        :style="{
+          height: '3em',
+          background: `linear-gradient(to right, ${arrayToRgb(alarmSetting.colors[n - 1])}, ${arrayToRgb(alarmSetting.colors[n])})`
+        }"
+        class="col"
+      />
+    </div>
     <q-card-section>
-      <div class="row">
-        <div
-          v-for="(c, index) in alarmSetting.colors"
-          :key="`${arrayToRgb(c)}_${index}`"
-          :style="{height: '3em', backgroundColor: arrayToRgb(c)}"
-          class="col"
-        />
-      </div>
-      This alarm will run for <span class="text-weight-bold">{{ durationMinutes }} minutes</span>, progressing through the colors above.
+      During <span class="text-weight-bold">{{ durationMinutes }} minutes</span>, this alarm will cycle through the colors above.
       <template v-if="playlistUri !== ''">
-        It will play the playlist <span class="text-weight-bold">{{ playlistObj.name }}</span> with the volume progressing from {{ alarmSetting.volumes[0][1] }}% to {{ alarmSetting.volumes[alarmSetting.volumes.length - 1][1] }}%.
+        <br>
+        It will play the playlist <span class="text-weight-bold">{{ playlistObj.name }}</span> with the volume progressing from <span class="text-weight-bold">{{ alarmSetting.volumes[0][1] }}% to {{ alarmSetting.volumes[alarmSetting.volumes.length - 1][1] }}%</span>.
       </template>
     </q-card-section>
     <q-card-section>
