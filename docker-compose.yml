@@ -9,8 +9,6 @@ services:
       - type: bind
         source: ./led-zmq-server
         target: /home/docker/code
-    ports:
-    - '5555:5555'
 
   ui:
     build:
