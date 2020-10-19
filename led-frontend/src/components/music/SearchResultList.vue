@@ -40,7 +40,6 @@ import Track from 'components/music/Track';
 import { format } from 'quasar';
 const { capitalize } = format;
 
-console.log(capitalize('some text'));
 export default {
   components: { Track },
   props: {
