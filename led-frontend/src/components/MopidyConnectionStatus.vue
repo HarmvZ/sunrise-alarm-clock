@@ -32,6 +32,14 @@ export default {
       },
     };
   },
+  watch: {
+    mopidyStatus: {
+      immediate: true,
+      handler: function (s) {
+        console.log(' status', s);
+      },
+    },
+  },
 };
 </script>
 
