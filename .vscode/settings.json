@@ -1,0 +1,18 @@
+{
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "eslint.validate": [
+        "javascript",
+        "vue"
+    ],
+    "eslint.alwaysShowStatus": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.packageManager": "yarn",
+    "eslint.format.enable": true,
+    "eslint.options": {
+        "extensions": [".html", ".js", ".vue"]
+    }
+}
