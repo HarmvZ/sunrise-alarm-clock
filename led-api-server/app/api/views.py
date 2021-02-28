@@ -1,9 +1,8 @@
-from django.http import HttpResponse, JsonResponse, Http404
+from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.decorators import action
 
 from alarms.models import AlarmConfig
 from api.serializers import (
@@ -11,7 +10,6 @@ from api.serializers import (
     TransitionColorSerializer,
     ClockSerializer,
     AnimationSerializer,
-    StartAlarmSerializer,
     AlarmConfigSerializer,
 )
 from api.utils import bit24_to_3_bit8
