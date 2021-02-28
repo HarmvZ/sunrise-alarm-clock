@@ -1,5 +1,6 @@
 import zmq
 
+
 # Singleton class as defined in:
 # https://python-3-patterns-idioms-test.readthedocs.io/en/latest/Singleton.html
 class ZMQClient:
@@ -7,7 +8,7 @@ class ZMQClient:
         def __init__(self):
             context = zmq.Context()
             self.socket = context.socket(zmq.REQ)
-            self.socket.connect("tcp://zmq:5566")
+            self.socket.connect("tcp://zmq:5567")
 
         def perform_request(self, name, **kwargs):
             message = {"action": name, "kwargs": kwargs}
