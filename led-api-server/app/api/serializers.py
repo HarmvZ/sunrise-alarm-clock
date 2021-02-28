@@ -1,13 +1,7 @@
 from rest_framework import serializers
 
-from alarms.models import Alarm, AlarmConfig
+from alarms.models import AlarmConfig
 from django.conf import settings
-
-
-class AlarmSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Alarm
-        fields = ["pk", "enabled", "minute", "hour", "day_of_week", "name"]
 
 
 class ColorSerializer(serializers.Serializer):

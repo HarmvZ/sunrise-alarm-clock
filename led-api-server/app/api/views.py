@@ -5,13 +5,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
-from alarms.models import Alarm, AlarmConfig
+from alarms.models import AlarmConfig
 from api.serializers import (
     ColorSerializer,
     TransitionColorSerializer,
     ClockSerializer,
     AnimationSerializer,
-    AlarmSerializer,
     StartAlarmSerializer,
     AlarmConfigSerializer,
 )
@@ -22,20 +21,6 @@ from api.zmq_client import ZMQClient
 @csrf_exempt
 def status_view(request):
     return HttpResponse("", status=200)
-
-
-class AlarmViewSet(viewsets.ModelViewSet):
-    queryset = Alarm.objects.all()
-    serializer_class = AlarmSerializer
-
-    @action(detail=False, methods=["get"])
-    def first_upcoming_alarm(self, request):
-        alarms = Alarm.objects.filter(enabled=True)
-        if len(alarms) == 0:
-            return JsonResponse({})
-        alarms = sorted(alarms, key=lambda m: m.first_upcoming_datetime)
-        serializer = self.get_serializer(alarms[0])
-        return JsonResponse(serializer.data)
 
 
 @api_view(["GET"])
