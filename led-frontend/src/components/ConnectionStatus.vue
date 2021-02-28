@@ -5,6 +5,7 @@
     :color="colors[status]"
     text-color="white"
     size="24px"
+    rounded
   />
 </template>
 
@@ -40,7 +41,7 @@ export default {
     this.status = await this.checkStatus();
     this.timer = setInterval(async () => {
       this.status = await this.checkStatus();
-    }, 5000);
+    }, 15000);
   },
   beforeDestroy () {
     clearInterval(this.timer);

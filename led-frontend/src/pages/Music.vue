@@ -16,6 +16,15 @@
       class="col-12"
     >
       <Audio :mopidy="mopidy" />
+      <card
+        title="Music search"
+      >
+        <MusicSelectAction
+          class="q-pa-md"
+          @play-now="playTrackNow($event)"
+          @add-to-playlist="addTrackToPlaylistFirst($event)"
+        />
+      </card>
       <Volume :mopidy="mopidy" />
       <card title="Mopidy Iris">
         <q-card-section class="column items-center q-mt-md">
@@ -50,40 +59,33 @@
 </style>
 
 <script>
-import Mopidy from 'mopidy';
 import { openURL } from 'quasar';
 import Audio from 'components/Audio';
 import Volume from 'components/Volume';
+import MusicSelectAction from 'components/music/MusicSelectAction';
 
 export default {
   name: 'Music',
-  components: { Audio, Volume },
+  components: { Audio, Volume, MusicSelectAction },
   data () {
     return {
-      status: 0, // 0: pending, 1: connected, 2: connection failure
-      mopidy: null,
+      status: window.mopidyStatus,
+      mopidy: window.mopidy,
       hostname: process.env.HOSTNAME,
+      trackActions: false,
     };
-  },
-  mounted () {
-    this.mopidy = new Mopidy({
-      webSocketUrl: 'ws://raspberrypi:6680/mopidy/ws', // TODO fix hostname?
-    });
-    this.mopidy.on('state:online', () => {
-      this.status = 1;
-    });
-    this.mopidy.on('state:offline', () => {
-      this.status = 2;
-      this.$q.notify({
-        message: 'Can\'t connect to MPD server',
-        position: 'top',
-        color: 'negative',
-        icon: 'report_problem',
-      });
-    });
   },
   methods: {
     openURL,
+    async playTrackNow (uri) {
+      const tlTracks = await this.addTrackToPlaylistFirst(uri);
+      await window.mopidy.playback.play({ tl_track: tlTracks[0] });
+    },
+    async addTrackToPlaylistFirst (uri) {
+      const tlIndex = await window.mopidy.tracklist.index();
+      const tlTracks = await window.mopidy.tracklist.add({ uris: [uri], at_position: tlIndex + 1 });
+      return tlTracks;
+    },
   },
 };
 </script>

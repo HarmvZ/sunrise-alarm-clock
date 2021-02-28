@@ -3,7 +3,7 @@ from led_core import LedCore
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
-socket.bind("tcp://*:5566")
+socket.bind("tcp://*:5567")
 lc = LedCore()
 while True:
     result = "success"

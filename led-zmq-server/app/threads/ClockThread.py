@@ -8,6 +8,7 @@ from settings import (
     NUMBERS,
 )
 
+
 class ClockThread(StoppableThread):
     def __init__(self, strip, **kwargs):
         super().__init__(strip)
@@ -18,7 +19,7 @@ class ClockThread(StoppableThread):
         while not self.stopped():
             matrix = self.create_binary_time_matrix()
             self.write_matrix_to_strip(self.strip, matrix, self.fg_color, self.bg_color)
-            time.sleep(.9)
+            time.sleep(0.9)
 
     @staticmethod
     def write_matrix_to_strip(strip, matrix, fg, bg):

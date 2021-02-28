@@ -6,8 +6,6 @@ services:
     build:
       context: ./led-zmq-server
       target: 'production-stage'
-    ports:
-    - '5555:5555'
 
   ui:
     restart: always
