@@ -4,7 +4,6 @@ from rest_framework.routers import DefaultRouter
 from api import views
 
 router = DefaultRouter()
-router.register("alarms", views.AlarmViewSet)
 router.register("alarm-settings", views.AlarmConfigViewSet)
 
 urlpatterns = [

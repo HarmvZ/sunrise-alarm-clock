@@ -11,9 +11,6 @@
         />
       </div>
     </card>
-    <router-link to="/alarms">
-      <UpcomingAlarm />
-    </router-link>
     <card title="Color">
       <div class="row items-center">
         <ChangeColor
@@ -37,14 +34,13 @@
 </style>
 
 <script>
-import UpcomingAlarm from 'components/UpcomingAlarm';
 import ChangeColor from 'components/ChangeColor';
 import ShowClock from 'components/ShowClock';
 import ShowAnimation from 'components/ShowAnimation';
 
 export default {
   name: 'PageIndex',
-  components: { UpcomingAlarm, ChangeColor, ShowClock, ShowAnimation },
+  components: { ChangeColor, ShowClock, ShowAnimation },
   data () {
     return {
       alarm: false,

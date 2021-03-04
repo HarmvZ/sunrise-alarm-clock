@@ -1,13 +1,5 @@
 <template>
   <div>
-    <alarm-detail
-      v-for="alarm in alarms"
-      :key="alarm.pk"
-      v-bind="alarm"
-      :day-of-week="alarm.day_of_week"
-      :update-alarm="updateAlarm"
-      :remove-alarm="removeAlarm"
-    />
     <AlarmConfigDetail
       v-for="alarmSetting in alarmSettings"
       :key="alarmSetting.pk"
@@ -22,17 +14,6 @@
       <q-btn
         fab
         color="primary"
-        icon="alarm_off"
-        @click="addAlarm()"
-      />
-    </q-page-sticky>
-    <q-page-sticky
-      position="bottom-right"
-      :offset="[90, 18]"
-    >
-      <q-btn
-        fab
-        color="primary"
         icon="alarm"
         @click="addAlarmSetting()"
       />
@@ -41,12 +22,11 @@
 </template>
 
 <script>
-import AlarmDetail from 'components/alarm/AlarmDetail';
 import AlarmConfigDetail from 'components/alarm/AlarmConfigDetail';
 
 export default {
   name: 'AlarmList',
-  components: { AlarmConfigDetail, AlarmDetail },
+  components: { AlarmConfigDetail },
   data () {
     return {
       alarms: [],
@@ -54,7 +34,6 @@ export default {
     };
   },
   mounted () {
-    this.syncAlarms();
     this.syncAlarmSettings();
   },
   methods: {
@@ -94,30 +73,6 @@ export default {
         responseType: 'json',
       });
     },
-    // Alarm API methods
-    async syncAlarms () {
-      this.alarms = await this.syncModels('alarms');
-    },
-    async addAlarm () {
-      const data = {
-        enabled: false,
-        minute: '00',
-        hour: '08',
-        day_of_week: '0,1,2,3,4,5,6',
-      };
-      await this.addModel('alarms', data);
-      this.syncAlarms();
-    },
-    async removeAlarm (pk) {
-      await this.removeModel('alarms', pk);
-      this.alarms = this.alarms.filter(alarm => alarm.pk !== pk);
-      this.syncAlarms();
-    },
-    async updateAlarm (pk, changes) {
-      await this.updateModel('alarms', pk, changes);
-      this.syncAlarms();
-    },
-
     // AlarmSettings API methods
     async syncAlarmSettings () {
       this.alarmSettings = await this.syncModels('alarm-settings');
@@ -143,7 +98,7 @@ export default {
     },
 
     refresh (done) {
-      this.syncAlarms().then(() => this.syncAlarmSettings().then(() => this.done()));
+      this.syncAlarmSettings().then(() => this.done());
     },
 
     // Other methods

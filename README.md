@@ -127,5 +127,5 @@ lc.strip_action('start_alarm', duration=1, colors=[[0,0,0],[50,0,0]], playlist="
 
 ### Troubleshooting
 
-# If building api container throws signature error
+#### If building api container throws signature error
 See https://askubuntu.com/a/1264921 method 2 for a fix
