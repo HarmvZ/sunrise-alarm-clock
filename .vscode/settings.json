@@ -14,5 +14,7 @@
     "eslint.format.enable": true,
     "eslint.options": {
         "extensions": [".html", ".js", ".vue"]
-    }
+    },
+    "python.pythonPath": "/usr/bin/python3",
+    "editor.formatOnSave": false,
 }
