@@ -6,8 +6,8 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
-      'axios',
-      'global-components',
+      'globalComponents',
+      'globalConstants',
     ],
 
     css: [
@@ -78,6 +78,7 @@ module.exports = function (ctx) {
         'QPopupProxy',
         'QMarkupTable',
         'QInnerLoading',
+        'QSelect',
       ],
 
       directives: [
@@ -124,6 +125,10 @@ module.exports = function (ctx) {
       env: {
         API_BASE_URL: JSON.stringify(ctx.dev ? 'http://localhost:8888/' : `http://${process.env.HOSTNAME}:8888/`),
         HOSTNAME: JSON.stringify(ctx.dev ? 'localhost' : process.env.HOSTNAME),
+        WLED_WS: JSON.stringify(process.env.WLED_WS),
+        WLED_UI: JSON.stringify(process.env.WLED_UI),
+        MOPIDY_WS: JSON.stringify(process.env.MOPIDY_WS),
+        MOPIDY_UI: JSON.stringify(process.env.MOPIDY_UI),
       },
     },
 

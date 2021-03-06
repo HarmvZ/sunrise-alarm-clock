@@ -24,7 +24,7 @@
         <q-btn
           :color="mute ? 'grey-9' : 'grey-9'"
           icon="volume_off"
-          @click="mopidy.mixer.setMute([!mute])"
+          @click="$mopidy.mixer.setMute([!mute])"
         />
         <q-btn
           color="grey-9"
@@ -62,12 +62,6 @@
 <script>
 export default {
   name: 'Volume',
-  props: {
-    mopidy: {
-      type: Object,
-      required: true,
-    },
-  },
   data () {
     return {
       volume: 100,
@@ -75,23 +69,23 @@ export default {
     };
   },
   mounted () {
-    this.mopidy.on('event:volumeChanged', eObj => {
+    this.$mopidy.on('event:volumeChanged', eObj => {
       this.volume = eObj.volume;
     });
 
-    this.mopidy.on('event:muteChanged', eObj => {
+    this.$mopidy.on('event:muteChanged', eObj => {
       this.mute = eObj.mute;
     });
-    this.mopidy.mixer.getMute().then(mute => { this.mute = mute; });
-    this.mopidy.mixer.getVolume().then(volume => { this.volume = volume; });
+    this.$mopidy.mixer.getMute().then(mute => { this.mute = mute; });
+    this.$mopidy.mixer.getVolume().then(volume => { this.volume = volume; });
   },
   methods: {
     incrementVolume (inc) {
       const v = Math.max(0, Math.min(100, this.volume + inc));
-      this.mopidy.mixer.setVolume([v]);
+      this.$mopidy.mixer.setVolume([v]);
     },
     changeVolume (v) {
-      this.mopidy.mixer.setVolume([v]);
+      this.$mopidy.mixer.setVolume([v]);
     },
   },
 };

@@ -23,7 +23,8 @@
         </q-toolbar-title>
 
         <connection-status class="q-mr-sm" />
-        <mopidy-connection-status />
+        <mopidy-connection-status class="q-mr-sm" />
+        <WLEDConnectionStatus />
       </q-toolbar>
     </q-header>
 
@@ -80,6 +81,7 @@
 import { openURL } from 'quasar';
 import ConnectionStatus from 'components/ConnectionStatus';
 import MopidyConnectionStatus from 'components/MopidyConnectionStatus';
+import WLEDConnectionStatus from 'components/WLEDConnectionStatus';
 
 const menuList = [
   {
@@ -111,7 +113,7 @@ const menuList = [
 
 export default {
   name: 'MyLayout',
-  components: { MopidyConnectionStatus, ConnectionStatus },
+  components: { MopidyConnectionStatus, ConnectionStatus, WLEDConnectionStatus },
   data () {
     return {
       drawerOpen: false,

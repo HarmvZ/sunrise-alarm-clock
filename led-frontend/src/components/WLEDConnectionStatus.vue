@@ -1,12 +1,13 @@
 <template>
   <q-avatar
     ref="avatar"
-    :icon="icons[mopidyStatus]"
-    :color="colors[mopidyStatus]"
+    :icon="icons[wledStatus]"
+    :color="colors[wledStatus]"
     text-color="white"
     size="24px"
-    :class="mopidyStatus === 0 ? 'spin' : ''"
+    :class="wledStatus === 0 ? 'spin' : ''"
     rounded
+    @click="onClick()"
   />
 </template>
 
@@ -22,7 +23,7 @@ export default {
     return {
       icons: {
         0: 'loop',
-        1: 'audiotrack',
+        1: 'lightbulb',
         2: 'error',
       },
       colors: {
@@ -34,15 +35,27 @@ export default {
   },
   computed: {
     ...mapState({
-      mopidyStatus: 'mopidyStatus',
+      wledStatus: 'wledStatus',
+      wledState: 'wledState',
     }),
   },
   watch: {
-    mopidyStatus: {
+    wledStatus: {
       immediate: true,
       handler: function (s) {
         console.log(' status', s);
       },
+    },
+  },
+  methods: {
+    onClick () {
+      if (this.wledStatus === 1) {
+        if (this.wledState.on) {
+          this.$wledSocket.send(JSON.stringify({ 'on': false }));
+        } else {
+          this.$wledSocket.send(JSON.stringify({ 'on': true }));
+        }
+      }
     },
   },
 };
