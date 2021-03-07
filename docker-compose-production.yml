@@ -18,13 +18,31 @@ services:
     ports:
     - '80:80'
 
+  # TODO activate production stage, when flaky threading is fixed
+  # api:
+  #   restart: always
+  #   build:
+  #     context: ./led-api-server
+  #     dockerfile: ./deploy/Dockerfile
+  #     target: 'production-stage'
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - '8888:8888'
+
   api:
     restart: always
     build:
       context: ./led-api-server
       dockerfile: ./deploy/Dockerfile
-      target: 'production-stage'
+      target: 'develop-stage'
     env_file:
-      - .env
+      - .env      
     ports:
-      - '8888:8888'
+      - "8888:8000"
+    command: >-
+      bash -c "
+      cd /home/docker/code/app
+      && python3 manage.py migrate
+      && python3 manage.py runserver 0.0.0.0:8000 
+      "
