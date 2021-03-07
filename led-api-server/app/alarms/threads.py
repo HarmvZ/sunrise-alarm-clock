@@ -55,7 +55,7 @@ class AlarmThread(StoppableThread):
                 self.volume = volume
 
         if self.playlist != "":
-            self.mopidy_client.start_playlist(self.playlist)
+            self.mopidy_client.start_playlist(self.playlist, self.start_volume)
 
         step = 0
         while step < self.steps:

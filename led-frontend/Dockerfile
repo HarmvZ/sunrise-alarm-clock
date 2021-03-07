@@ -1,5 +1,6 @@
 # develop stage
 FROM node:14.13.1-alpine3.10 as develop-stage
+RUN apk add --no-cache python make gcc g++
 WORKDIR /app
 COPY package*.json ./
 RUN yarn global add @quasar/cli

@@ -62,8 +62,6 @@ export default {
   data () {
     return {
       hostname: process.env.HOSTNAME,
-      mopidy: window.mopidy,
-      mopidyStatus: window.mopidyStatus,
       playlist: {},
     };
   },
@@ -80,8 +78,8 @@ export default {
       immediate: true,
       handler: function (val) {
         if (val !== '') {
-          this.mopidy.playlists.lookup([val]).then(pl => {
-            this.mopidy.library.getImages([[val]]).then(r => {
+          this.$mopidy.playlists.lookup([val]).then(pl => {
+            this.$mopidy.library.getImages([[val]]).then(r => {
               if (val in r && r[val].length > 0) {
                 pl['imageUri'] = r[val][0].uri;
               }

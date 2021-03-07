@@ -37,27 +37,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
   data () {
     return {
-      mopidy: window.mopidy,
-      mopidyStatus: window.mopidyStatus,
       playlists: [],
       imageUris: {},
     };
   },
+  computed: {
+    ...mapState({ mopidyStatus: 'mopidyStatus' }),
+  },
   watch: {
     playlists: function (val) {
       const uris = val.map(pl => pl.uri);
-      this.mopidy.library.getImages([uris]).then(r => { this.imageUris = r; });
+      this.$mopidy.library.getImages([uris]).then(r => { this.imageUris = r; });
     },
   },
   mounted () {
     if (this.mopidyStatus !== 1) {
       return;
     }
-    this.mopidy.playlists.asList().then(pl => {
+    this.$mopidy.playlists.asList().then(pl => {
       this.playlists = pl;
     });
   },

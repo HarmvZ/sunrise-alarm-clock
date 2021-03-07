@@ -80,8 +80,6 @@ export default {
   data () {
     return {
       loading: false,
-      status: window.mopidyStatus,
-      mopidy: window.mopidy,
       trackActions: false,
       tracks: [],
       trackImageUris: {},
@@ -90,13 +88,13 @@ export default {
   methods: {
     openTrackActions (uri) {
       this.loading = true;
-      window.mopidy.library.lookup({ uris: [uri] }).then(tracks => {
+      this.$mopidy.library.lookup({ uris: [uri] }).then(tracks => {
         this.tracks = [];
         for (const ts of Object.values(tracks)) {
           this.tracks.push(...ts);
         }
         const uris = this.tracks.map(t => t.uri);
-        window.mopidy.library.getImages([uris]).then(images => {
+        this.$mopidy.library.getImages([uris]).then(images => {
           for (const [uri, image] of Object.entries(images)) {
             this.trackImageUris[uri] = image;
           }

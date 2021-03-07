@@ -15,6 +15,7 @@ class MopidyClient:
             if params is not None:
                 data["params"] = params
             r = requests.request(
+                "POST",
                 self.url,
                 json=data,
             )
@@ -23,6 +24,7 @@ class MopidyClient:
         except Exception as e:
             self.connected = False
             print(str(e))
+            raise e
 
     def start_playlist(self, playlist_uri, start_volume):
         playlist = self.__request("core.playlists.lookup", params={"uri": playlist_uri})
