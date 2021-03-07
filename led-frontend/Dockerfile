@@ -7,11 +7,17 @@ COPY . .
 # build stage
 FROM develop-stage as build-stage
 ARG HOSTNAME
-ENV HOSTNAME=${HOSTNAME}
+ARG WLED_WS
+ARG WLED_UI
+ARG WLED_API
+ARG MOPIDY_WS
+ARG MOPIDY_UI
+ARG MOPIDY_API
 RUN yarn
 RUN quasar build
+RUN echo $WLED_API
 # production stage
-FROM nginx:1.17.3-alpine as production-stage
+FROM nginx:1.19.7-alpine as production-stage
 COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -40,7 +40,7 @@ export default {
         this.setWledState(data.state);
       }
     });
-    this.$axios.get(process.env.WLED_UI + '/json').then(r => {
+    this.$axios.get(process.env.WLED_API).then(r => {
       if (r.status === 200) {
         this.setWledPalettes(r.data.palettes);
         this.setWledEffects(r.data.effects);

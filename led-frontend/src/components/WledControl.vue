@@ -130,7 +130,6 @@ export default {
       return this.wledEffects[this.mainSegment.fx];
     },
     colorsRgb () {
-      console.log(this.mainSegment.col.map(c => `rgb(${c.join(',')})`));
       return this.mainSegment.col.map(c => `rgb(${c.join(',')})`);
     },
     ...mapState({

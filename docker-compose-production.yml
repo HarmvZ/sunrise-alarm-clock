@@ -1,19 +1,18 @@
 version: '3.7'
 services: 
-  zmq:
-    restart: always
-    privileged: true # Allow server to acces rpi GPIO for controlling LEDs
-    build:
-      context: ./led-zmq-server
-      target: 'production-stage'
-
   ui:
     restart: always
     build:
       context: ./led-frontend
       target: 'production-stage'
       args:
-        - HOSTNAME
+        - HOSTNAME=$HOSTNAME
+        - WLED_WS=$WLED_WS
+        - WLED_UI=$WLED_UI
+        - WLED_API=$WLED_API
+        - MOPIDY_WS=$MOPIDY_WS
+        - MOPIDY_UI=$MOPIDY_UI
+        - MOPIDY_API=$MOPIDY_API
     env_file:
       - .env
     ports:

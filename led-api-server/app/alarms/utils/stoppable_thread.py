@@ -1,15 +1,15 @@
 import threading
 
+
 class StoppableThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
     regularly for the stopped() condition.
     https://stackoverflow.com/a/325528
     """
 
-    def __init__(self, strip):
+    def __init__(self):
         super(StoppableThread, self).__init__()
         self._stop_event = threading.Event()
-        self.strip = strip
 
     def stop(self):
         self._stop_event.set()

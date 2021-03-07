@@ -1,5 +1,4 @@
 {
-    "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
     "eslint.validate": [
@@ -21,4 +20,7 @@
     },
     "python.pythonPath": "/usr/bin/python3",
     "editor.formatOnSave": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/led-api-server/app"
+    ],
 }

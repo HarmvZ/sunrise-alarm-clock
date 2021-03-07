@@ -24,45 +24,34 @@ RUN apt-get update && \
     python3-dev \
     python3-setuptools \
     python3-pip \
-    cron \
-    tzdata \
-    nano \
-    sqlite3 && \
+    sqlite3 \
+    curl && \
     pip3 install -U pip setuptools && \
     rm -rf /var/lib/apt/lists/*
 
-# set timezone
-ENV TZ=Europe/Amsterdam
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
+ENV PATH = "${PATH}:/root/.poetry/bin"
 
-# COPY requirements.txt and RUN pip install BEFORE adding the rest of your code, this will cause Docker's caching mechanism
-# to prevent re-installing (all your) dependencies when you made a change a line or two in your app.
+COPY pyproject.toml poetry.lock /home/docker/code/
+WORKDIR /home/docker/code/
 
-COPY requirements /home/docker/code/
+# Turn off virtualenv since the 
+RUN poetry config virtualenvs.create false
 
+FROM base-stage as develop-stage
+RUN poetry install --no-ansi
 
-
-From base-stage as develop-stage
-RUN pip3 install -r /home/docker/code/local.txt
-
-# add (the rest of) our code
 COPY . /home/docker/code/
 
 
-
 FROM base-stage as production-stage
-# install uwsgi now because it takes a little while
-RUN pip3 install uwsgi
-
 # setup all the configfiles
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY deploy/nginx-app.conf /etc/nginx/sites-available/default
 COPY deploy/supervisor-app.conf /etc/supervisor/conf.d/
 
+RUN poetry install --no-dev --no-ansi
 
-RUN pip3 install -r /home/docker/code/production.txt
-
-# add (the rest of) our code
 COPY . /home/docker/code/
 
 EXPOSE 8888

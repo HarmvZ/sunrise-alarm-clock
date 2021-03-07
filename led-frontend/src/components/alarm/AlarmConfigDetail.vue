@@ -54,6 +54,13 @@
         />
         <q-btn
           dark
+          label="Stop alarm"
+          color="grey-9"
+          class="full-width q-mb-sm"
+          @click="stopAlarm()"
+        />
+        <q-btn
+          dark
           label="Remove"
           color="negative"
           class="full-width"
@@ -170,6 +177,14 @@ export default {
     arrayToRgb,
     startAlarm () {
       const url = `/api/start_alarm/${this.alarmSetting.pk}/`;
+      this.request({
+        method: 'POST',
+        url,
+        responseType: 'json',
+      });
+    },
+    stopAlarm () {
+      const url = `/api/stop_alarm/`;
       this.request({
         method: 'POST',
         url,

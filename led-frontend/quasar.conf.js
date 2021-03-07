@@ -127,8 +127,11 @@ module.exports = function (ctx) {
         HOSTNAME: JSON.stringify(ctx.dev ? 'localhost' : process.env.HOSTNAME),
         WLED_WS: JSON.stringify(process.env.WLED_WS),
         WLED_UI: JSON.stringify(process.env.WLED_UI),
+        WLED_API: JSON.stringify(process.env.WLED_API),
         MOPIDY_WS: JSON.stringify(process.env.MOPIDY_WS),
         MOPIDY_UI: JSON.stringify(process.env.MOPIDY_UI),
+        MOPIDY_API: JSON.stringify(process.env.MOPIDY_API),
+        TEST2: JSON.stringify('testtt'),
       },
     },
 

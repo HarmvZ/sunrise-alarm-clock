@@ -42,10 +42,13 @@ export default {
     }),
   },
   watch: {
-    wledStatus: (val) => {
-      if (val === 1) {
-        this.sendMessage({ 'lv': true });
-      }
+    wledStatus: {
+      handler: function (val) {
+        if (val === 1) {
+          this.sendMessage({ 'lv': true });
+        }
+      },
+      immediate: true,
     },
   },
   mounted () {
