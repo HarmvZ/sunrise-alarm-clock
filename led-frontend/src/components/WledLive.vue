@@ -1,17 +1,24 @@
 <template>
-  <div
-    v-if="enabled"
-    class="row justify-between content-stretch"
-    style="height:2em;"
-  >
-    <div
-      v-for="(l, index) in leds"
-      :key="index"
-      :style="{
-        backgroundColor: `#${l}`,
-      }"
-      class="col"
+  <div>
+    <q-toggle
+      :value="showPreview"
+      label="Show preview"
+      @input="togglePreview"
     />
+    <div
+      v-if="enabled && showPreview"
+      class="row justify-between content-stretch"
+      style="height:3em;"
+    >
+      <div
+        v-for="(l, index) in leds"
+        :key="index"
+        :style="{
+          backgroundColor: `#${l}`,
+        }"
+        class="col"
+      />
+    </div>
   </div>
 </template>
 
@@ -28,6 +35,7 @@ export default {
     return {
       wledUrl: process.env.WLED_UI,
       leds: [],
+      showPreview: true,
     };
   },
   computed: {
@@ -45,14 +53,21 @@ export default {
     wledStatus: {
       handler: function (val) {
         if (val === 1) {
-          this.sendMessage({ 'lv': true });
+          if (Object.keys(this.wledState).length === 0) {
+            // Send extra message through socket to receive state
+            this.sendMessage({ v: true });
+            setTimeout(() => {
+              this.sendMessage({ lv: true });
+            }, 200);
+          } else {
+            this.sendMessage({ lv: true });
+          }
         }
       },
       immediate: true,
     },
   },
   mounted () {
-    this.sendMessage({ 'lv': true });
     this.$wledSocket.addEventListener('message', (event) => {
       const data = JSON.parse(event.data);
       if ('leds' in data) {
@@ -61,7 +76,7 @@ export default {
     });
   },
   destroyed () {
-    this.sendMessage({ 'lv': false });
+    this.sendMessage({ lv: false });
   },
   methods: {
     openURL,
@@ -69,6 +84,14 @@ export default {
       if (this.wledStatus === 1) {
         this.$wledSocket.send(JSON.stringify(msg));
       }
+    },
+    togglePreview (value, evt) {
+      if (value) {
+        this.sendMessage({ lv: true });
+      } else {
+        this.sendMessage({ lv: false });
+      }
+      this.showPreview = value;
     },
   },
 };

@@ -17,7 +17,7 @@
         </div>
       </q-card-section>
       <q-inner-loading :showing="wledStatus === 0">
-        <q-spinner-gears
+        <q-spinner
           size="50px"
           color="primary"
         />
