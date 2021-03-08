@@ -55,3 +55,7 @@ class WledClient:
             "bri": 255,
         }
         self._post(json=new_state)
+
+    def power_off(self):
+        if self.connected:
+            self._post(json={"on": False})
