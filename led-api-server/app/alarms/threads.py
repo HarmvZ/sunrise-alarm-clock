@@ -19,6 +19,7 @@ class AlarmThread(StoppableThread):
         self.colors = kwargs["colors"]
         self.playlist = kwargs["playlist"]
         self.volumes = kwargs["volumes"]
+        self.shuffle = kwargs["shuffle"]
 
         self.start_time = time.time()
         self.steps = self.duration / self.timestep  # nr of steps
@@ -55,7 +56,9 @@ class AlarmThread(StoppableThread):
                 self.volume = volume
 
         if self.playlist != "":
-            self.mopidy_client.start_playlist(self.playlist, self.start_volume)
+            self.mopidy_client.start_playlist(
+                self.playlist, self.start_volume, self.shuffle
+            )
 
         step = 0
         while step < self.steps:

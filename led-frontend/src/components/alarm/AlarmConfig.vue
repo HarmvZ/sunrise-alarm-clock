@@ -30,6 +30,11 @@
           :playlist-uri="playlist"
           @update="update(pk, $event)"
         />
+        <q-toggle
+          label="Shuffle"
+          :value="shuffle"
+          @input="toggleShuffle()"
+        />
       </q-item-label>
     </q-item>
     <q-item class="column">
@@ -86,6 +91,10 @@ export default {
       type: String,
       required: true,
     },
+    shuffle: {
+      type: Boolean,
+      required: true,
+    },
     duration: {
       type: Number,
       required: true,
@@ -120,6 +129,9 @@ export default {
   methods: {
     changeDuration (d) {
       this.update(this.pk, { duration: d * 60 });
+    },
+    toggleShuffle () {
+      this.update(this.pk, { shuffle: !this.shuffle });
     },
   },
 };

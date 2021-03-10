@@ -26,11 +26,13 @@ class MopidyClient:
             print(str(e))
             raise e
 
-    def start_playlist(self, playlist_uri, start_volume):
+    def start_playlist(self, playlist_uri, start_volume, shuffle):
         self.stop_playback()
         playlist = self.__request("core.playlists.lookup", params={"uri": playlist_uri})
         uris = [t["uri"] for t in playlist.get("tracks", [])]
         self.__request("core.tracklist.add", params={"uris": uris})
+        if shuffle:
+            self.__request("core.tracklist.shuffle")
         self.__request("core.mixer.set_volume", params={"volume": start_volume})
         self.__request("core.playback.play")
 

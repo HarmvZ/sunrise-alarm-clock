@@ -9,6 +9,7 @@ class AlarmConfigSerializer(serializers.ModelSerializer):
             "pk",
             "colors",
             "playlist",
+            "shuffle",
             "volumes",
             "duration",
         ]
