@@ -15,7 +15,7 @@ class WledClient:
             "nl": {
                 "on": False,
             },
-            "udpn": {"send": False, "recv": True},  # TODO?
+            "udpn": {"send": True, "recv": True},
         }
 
         r = self._get()
