@@ -70,7 +70,7 @@ export default {
   components: { Audio, Volume, MusicSelectAction },
   data () {
     return {
-      irirUrl: process.env.MOPIDY_UI,
+      irisUrl: process.env.MOPIDY_UI,
       trackActions: false,
     };
   },
