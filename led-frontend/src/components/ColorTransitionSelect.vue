@@ -18,7 +18,7 @@
         :value="arrayToRgb(c)"
         :removable="true"
         icon="colorize"
-        color="grey-9"
+        color="grey-10"
         @remove="removeColor(n)"
         @input="changeColor(n + 1, $event)"
       />
@@ -30,7 +30,7 @@
     <q-btn
       icon="add"
       label=""
-      color="grey-9"
+      color="grey-10"
       class="full-width"
       @click="addColor()"
     />

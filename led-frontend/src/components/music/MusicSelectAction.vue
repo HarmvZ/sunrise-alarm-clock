@@ -4,60 +4,55 @@
       @track-clicked="openTrackActions"
     />
     <q-dialog
+      ref="dialog"
       v-model="trackActions"
       dark
+      content-class="bg-secondary"
     >
-      <q-card dark>
-        <q-card-section
-          class="q-pt-none q-mx-none scroll"
-          style="max-height: 50vh"
-        >
-          <q-markup-table
-            dark
-            dense
-            class="text-left"
+      <q-markup-table
+        dark
+        dense
+        class="text-left "
+      >
+        <tbody>
+          <tr
+            v-for="track in tracks"
+            :key="track.uri"
           >
-            <tbody>
-              <tr
-                v-for="track in tracks"
-                :key="track.uri"
+            <td>
+              <slot :track="track">
+                <q-btn-group>
+                  <q-btn
+                    icon="play_arrow"
+                    dense
+                    color="accent"
+                    @click="onPlayClick(track.uri)"
+                  />
+                  <q-btn
+                    icon="playlist_add"
+                    dense
+                    color="primary"
+                    @click="$emit('add-to-playlist', track.uri)"
+                  />
+                </q-btn-group>
+              </slot>
+            </td>
+            <td>
+              <img
+                v-if="track.uri in trackImageUris"
+                :src="trackImageUris[track.uri][0].uri"
+                style="max-height: 3em"
               >
-                <td>
-                  <slot :track="track">
-                    <q-btn-group>
-                      <q-btn
-                        icon="play_arrow"
-                        dense
-                        color="primary"
-                        @click="$emit('play-now', track.uri)"
-                      />
-                      <q-btn
-                        icon="playlist_add"
-                        dense
-                        color="secondary"
-                        @click="$emit('add-to-playlist', track.uri)"
-                      />
-                    </q-btn-group>
-                  </slot>
-                </td>
-                <td>
-                  <img
-                    v-if="track.uri in trackImageUris"
-                    :src="trackImageUris[track.uri][0].uri"
-                    style="max-height: 3em"
-                  >
-                </td>
-                <td>
-                  <div class="text-weight-bold">
-                    {{ track.name }}
-                  </div>
-                  <div>{{ track.artists.map(a => a.name).join(', ') }}</div>
-                </td>
-              </tr>
-            </tbody>
-          </q-markup-table>
-        </q-card-section>
-      </q-card>
+            </td>
+            <td>
+              <div class="text-weight-bold">
+                {{ track.name }}
+              </div>
+              <div>{{ track.artists.map(a => a.name).join(', ') }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </q-markup-table>
     </q-dialog>
 
     <q-inner-loading
@@ -103,7 +98,10 @@ export default {
         });
       });
     },
-
+    onPlayClick (trackUri) {
+      this.$emit('play-now', trackUri);
+      this.$refs.dialog.hide();
+    },
   },
 };
 </script>

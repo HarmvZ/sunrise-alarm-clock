@@ -3,7 +3,7 @@
     <div class="q-py-md row justify-between">
       <q-btn
         :label="`Start: ${volumes[0][1]}%`"
-        color="grey-9"
+        color="grey-10"
       >
         <volume-slider
           :volume="volumes[0][1]"
@@ -43,7 +43,7 @@
     </div> -->
       <q-btn
         :label="`End: ${volumes[volumes.length -1][1]}%`"
-        color="grey-9"
+        color="grey-10"
       >
         <volume-slider
           :volume="volumes[volumes.length -1][1]"
@@ -62,7 +62,7 @@
       >
         <div
           :key="idx"
-          class="display-inline q-pa-sm bg-grey-9 row justify-center"
+          class="display-inline q-pa-sm bg-grey-10 row justify-center"
           style="width: 5em"
         >
           <div class="row items-center">

@@ -2,7 +2,6 @@
   <q-list
     dark
     class="full-width"
-    bordered
     separator
   >
     <q-item class="column">

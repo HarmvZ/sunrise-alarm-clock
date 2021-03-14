@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-px-md">
+  <q-page padding>
     <div
       v-if="mopidyStatus === 0"
       class="col-12 text-center"
@@ -11,46 +11,37 @@
         class="q-ma-xl"
       />
     </div>
-    <div
+    <card
       v-if="mopidyStatus === 1"
       class="col-12"
     >
       <Audio />
-      <card
-        title="Music search"
-      >
-        <MusicSelectAction
-          class="q-pa-md"
-          @play-now="playTrackNow($event)"
-          @add-to-playlist="addTrackToPlaylistFirst($event)"
-        />
-      </card>
-      <Volume />
-      <card title="Mopidy Iris">
-        <q-card-section class="column items-center q-mt-md">
-          <q-btn
-            color="primary"
-            @click="openURL(irisUrl)"
-          >
-            Open Mopidy Iris&nbsp;
-            <q-icon name="open_in_new" />
-          </q-btn>
-        </q-card-section>
-      </card>
-    </div>
+      <MusicSelectAction
+        class="q-px-md"
+        @play-now="playTrackNow($event)"
+        @add-to-playlist="addTrackToPlaylistFirst($event)"
+      />
+      <q-card-section>
+        <q-btn
+          color="primary"
+          @click="openURL(irisUrl)"
+        >
+          Open Mopidy Iris&nbsp;
+          <q-icon name="open_in_new" />
+        </q-btn>
+      </q-card-section>
+    </card>
     <div
       v-if="mopidyStatus === 2"
       class="col-12"
     >
-      <q-card
-        class="col-12 bg-grey-9 text-center q-mt-md"
-      >
+      <card>
         <q-card-section class="">
           <div class="">
             MPD server connection failure
           </div>
         </q-card-section>
-      </q-card>
+      </card>
     </div>
   </q-page>
 </template>
@@ -62,12 +53,11 @@
 import { openURL } from 'quasar';
 import { mapState } from 'vuex';
 import Audio from 'components/Audio';
-import Volume from 'components/Volume';
 import MusicSelectAction from 'components/music/MusicSelectAction';
 
 export default {
   name: 'Music',
-  components: { Audio, Volume, MusicSelectAction },
+  components: { Audio, MusicSelectAction },
   data () {
     return {
       irisUrl: process.env.MOPIDY_UI,

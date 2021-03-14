@@ -1,7 +1,5 @@
 <template>
-  <Card
-    title="Now playing"
-  >
+  <div>
     <q-parallax
       :src="track === null ? 'statics/audio.jpg' : imageURL"
       :height="250"
@@ -11,9 +9,9 @@
         <q-spinner-bars
           v-show="state === 'playing'"
           color="primary"
-          size="10em"
+          size="4em"
           class="col-12"
-          style="opacity:0.5"
+          style="opacity:0.8"
         />
         <div
           v-show="track !== null"
@@ -30,25 +28,17 @@
             {{ albumName }}
           </div>
         </div>
+        <q-linear-progress
+          v-if="timePosition"
+          rounded
+          size="md"
+          :value="timePosition / trackLength"
+          class="q-mt-md"
+        />
       </div>
     </q-parallax>
-    <q-card-section
-      v-show="track !== null"
-      class="column items-center"
-    />
-
-    <q-card-section class="column items-center">
-      <q-linear-progress
-        v-if="timePosition"
-        rounded
-        size="xl"
-        :value="timePosition / trackLength"
-        color="grey-9"
-        label="progress"
-      />
-    </q-card-section>
-    <q-card-section class="column items-center">
-      <q-btn-group>
+    <q-card-section class="items-center">
+      <q-btn-group class="q-mb-sm">
         <q-btn
           color="primary"
           icon="skip_previous"
@@ -62,7 +52,7 @@
         />
         <q-btn
           v-if="state === 'paused' || state === 'stopped'"
-          color="primary"
+          color="accent"
           icon="play_arrow"
           @click="$mopidy.playback.play()"
         />
@@ -78,35 +68,44 @@
           @click="$mopidy.playback.next()"
         />
       </q-btn-group>
-    </q-card-section>
-    <q-card-section class="column items-center">
-      <q-btn-group>
+      <div class="q-mt-sm">
         <q-btn
-          :color="repeat ? 'primary' : 'grey-9'"
+          :flat="!repeat"
+          :outline="repeat"
+          color="primary"
           icon="repeat"
+          class="q-mx-sm"
           @click="$mopidy.tracklist.setRepeat([!repeat])"
         />
         <q-btn
-          :color="single ? 'primary' : 'grey-9'"
+          :flat="!single"
+          :outline="single"
+          color="primary"
           icon="repeat_one"
+          class="q-mx-sm"
           @click="$mopidy.tracklist.setSingle([!single])"
         />
         <q-btn
-          :color="random ? 'primary' : 'grey-9'"
+          :flat="!random"
+          :outline="random"
+          color="primary"
           icon="shuffle"
+          class="q-mx-sm"
+          style="border: 0;"
           @click="$mopidy.tracklist.setRandom([!random])"
         />
-      </q-btn-group>
+      </div>
+      <Volume />
     </q-card-section>
-  </Card>
+  </div>
 </template>
 
 <script>
-import Card from 'components/Card';
+import Volume from 'components/Volume';
 
 export default {
   name: 'Audio',
-  components: { Card },
+  components: { Volume },
   data () {
     return {
       connected: false,

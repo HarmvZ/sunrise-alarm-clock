@@ -2,7 +2,7 @@
   <div>
     <q-item-section>
       <q-parallax
-        :src="playlist.imageUri === '' ? 'statics/audio.jpg' : playlist.imageUri"
+        :src="!('imageUri' in playlist) || playlist.imageUri === '' ? 'statics/audio.jpg' : playlist.imageUri"
         :height="150"
       />
     </q-item-section>
@@ -16,7 +16,7 @@
         icon="open_in_new"
         class="full-width q-mb-sm"
         dark
-        color="grey-9"
+        color="grey-10"
         @click="openURL(editPlaylistUrl)"
       />
 

@@ -1,62 +1,24 @@
 <template>
-  <card title="Volume">
-    <q-card-section class="items-center q-mt-md">
-      <q-item>
-        <q-item-section side>
-          <q-icon name="volume_down" />
-        </q-item-section>
-        <q-item-section>
-          <q-slider
-            v-model="volume"
-            :min="0"
-            :max="100"
-            label
-            @change="changeVolume"
-          />
-        </q-item-section>
-        <q-item-section side>
-          <q-icon name="volume_up" />
-        </q-item-section>
-      </q-item>
-    </q-card-section>
-    <q-card-section class="column items-center">
-      <q-btn-group>
-        <q-btn
-          :color="mute ? 'grey-9' : 'grey-9'"
-          icon="volume_off"
-          @click="$mopidy.mixer.setMute([!mute])"
-        />
-        <q-btn
-          color="grey-9"
-          icon="volume_down"
-          @click="incrementVolume(-10)"
-        >
-          -10
-        </q-btn>
-        <q-btn
-          color="grey-9"
-          icon="volume_down"
-          @click="incrementVolume(-1)"
-        >
-          -1
-        </q-btn>
-        <q-btn
-          color="grey-9"
-          icon="volume_up"
-          @click="incrementVolume(1)"
-        >
-          +1
-        </q-btn>
-        <q-btn
-          color="grey-9"
-          icon="volume_up"
-          @click="incrementVolume(10)"
-        >
-          +10
-        </q-btn>
-      </q-btn-group>
-    </q-card-section>
-  </card>
+  <q-item>
+    <q-item-section side>
+      <q-btn
+        color="primary"
+        :flat="!mute"
+        :outline="mute"
+        :icon="mute ? 'volume_off' : 'volume_up'"
+        @click="$mopidy.mixer.setMute([!mute])"
+      />
+    </q-item-section>
+    <q-item-section>
+      <q-slider
+        v-model="volume"
+        :min="0"
+        :max="100"
+        label
+        @change="changeVolume"
+      />
+    </q-item-section>
+  </q-item>
 </template>
 
 <script>

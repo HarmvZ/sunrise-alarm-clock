@@ -6,23 +6,16 @@
     >
       <q-list
         v-if="resultType in searchResults && searchResults[resultType].length"
-        bordered
         dark
-        separator
         dense
-        class="q-mb-md"
       >
-        <q-item
-          dark
-          class="bg-grey-9"
+        <q-item-label
+          no-wrap
+          class="text-weight-bold"
+          header
         >
-          <q-item-section
-            no-wrap
-            class="text-weight-bold"
-          >
-            {{ capitalize(resultType) }}
-          </q-item-section>
-        </q-item>
+          {{ capitalize(resultType) }}
+        </q-item-label>
         <Track
           v-for="item in searchResults[resultType].slice(0,5)"
           :key="item.uri"

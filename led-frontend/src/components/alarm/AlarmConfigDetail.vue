@@ -9,7 +9,7 @@
         {{ `Alarm ${alarmSetting.pk}` }}
       </div>
       <div class="text-white">
-        {{ `Endpoint: /api/start_alarm/${alarmSetting.pk}/` }}
+        {{ apiUrl }}
       </div>
     </q-parallax>
     <div class="row">
@@ -23,81 +23,80 @@
         class="col"
       />
     </div>
-    <q-card-section>
-      During <span class="text-weight-bold">{{ durationMinutes }} minutes</span>, this alarm will cycle through the colors above.
-      <template v-if="playlistUri !== ''">
-        <br>
-        It will play the playlist <span class="text-weight-bold">{{ playlistObj.name }}</span> with the volume progressing from <span class="text-weight-bold">{{ alarmSetting.volumes[0][1] }}% to {{ alarmSetting.volumes[alarmSetting.volumes.length - 1][1] }}%</span>.
-      </template>
-    </q-card-section>
-    <q-card-section>
-      <q-expansion-item
-        expand-separator
-        dark
-        icon="settings"
-        label="Settings"
-        header-class="bg-grey-9"
+    <q-card-section
+      class="text-grey-5"
+      v-html="alarmDescriptionHtml"
+    />
+    <q-card-actions
+      class="row"
+    >
+      <q-btn-group
+        spread
+        class="col"
       >
-        <alarm-config
-          v-bind="alarmSetting"
-          :update="update"
-          :remove="remove"
-        />
-      </q-expansion-item>
-      <q-card-actions align="right">
         <q-btn
           dark
-          label="Start alarm"
-          color="primary"
-          class="full-width q-mb-sm"
+          icon="play_arrow"
+          color="accent"
           @click="startAlarm()"
         />
         <q-btn
           dark
-          label="Stop alarm"
-          color="grey-9"
-          class="full-width q-mb-sm"
+          icon="stop"
+          color="grey-10"
           @click="stopAlarm()"
         />
         <q-btn
           dark
-          label="Remove"
           color="negative"
-          class="full-width"
+          icon="delete"
           @click="confirmDelete = true"
         />
-      </q-card-actions>
-      <q-dialog
-        v-model="confirmDelete"
-        dark
-      >
-        <q-card class="bg-grey-9 text-white">
-          <q-card-section class="row items-center">
-            <q-avatar
-              icon="warning"
-              color="negative"
-              text-color="white"
-            />
-            <span class="q-ml-sm">Are you sure you want to remove this alarm?</span>
-          </q-card-section>
-          <q-card-actions align="right">
-            <q-btn
-              v-close-popup
-              flat
-              label="Cancel"
-              color="white"
-            />
-            <q-btn
-              v-close-popup
-              flat
-              label="Ok"
-              color="negative"
-              @click="remove(alarmSetting.pk)"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-    </q-card-section>
+      </q-btn-group>
+    </q-card-actions>
+    <q-expansion-item
+      expand-separator
+      dark
+      icon="settings"
+      label="Settings"
+      header-class="bg-grey-10"
+    >
+      <alarm-config
+        v-bind="alarmSetting"
+        :update="update"
+        :remove="remove"
+      />
+    </q-expansion-item>
+    <q-dialog
+      v-model="confirmDelete"
+      dark
+    >
+      <q-card class="bg-grey-10 text-white">
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="warning"
+            color="negative"
+            text-color="white"
+          />
+          <span class="q-ml-sm">Are you sure you want to remove this alarm?</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            label="Cancel"
+            color="white"
+          />
+          <q-btn
+            v-close-popup
+            flat
+            label="Ok"
+            color="negative"
+            @click="remove(alarmSetting.pk)"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </card>
 </template>
 
@@ -149,6 +148,25 @@ export default {
     durationMinutes () {
       return Number.parseInt(this.alarmSetting.duration / 60);
     },
+    apiUrl () {
+      return `${process.env.API_BASE_URL}/api/start_alarm/${this.alarmSetting.pk}/`;
+    },
+    alarmDescriptionHtml () {
+      const highlightText = text => `<span class="highlight">${text}</span>`;
+      let text = 'This alarm will transition through the colors above in ';
+      text += highlightText(`${this.durationMinutes} minutes`);
+      if (this.playlistUri !== '') {
+        text += `, while playing the ${highlightText(this.playlistObj.name)} playlist`;
+        if (this.alarmSetting.shuffle) {
+          text += ' on shuffle';
+        }
+        text += ' with volume progressing from';
+        text += ` ${highlightText(`${this.alarmSetting.volumes[0][1]}%`)} to`;
+        text += ` ${highlightText(`${this.alarmSetting.volumes[this.alarmSetting.volumes.length - 1][1]}%`)}`;
+      }
+      text += '.';
+      return text;
+    },
   },
   watch: {
     playlistUri: {
@@ -199,5 +217,9 @@ export default {
 }
 .q-parallax.opacity-parallax .q-parallax__media img {
   opacity: .2;
+}
+span.highlight {
+  font-weight: bold;
+  color: white;
 }
 </style>
