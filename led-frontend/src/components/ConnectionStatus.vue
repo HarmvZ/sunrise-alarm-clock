@@ -5,6 +5,7 @@
     :color="colors[status]"
     text-color="white"
     size="24px"
+    :class="status === 0 ? 'spin' : ''"
     rounded
   />
 </template>
@@ -16,53 +17,28 @@
 
 export default {
   name: 'ConnectionStatus',
-  data () {
-    return {
-      status: 0, // 0: checking, 1: connected, 2: error
-      icons: {
+  props: {
+    status: {
+      type: Number,
+      required: true,
+    },
+    icons: {
+      type: Object,
+      default: () => ({
         0: 'import_export',
         1: 'wb_sunny',
         2: 'error',
-      },
+      }),
+    },
+  },
+  data () {
+    return {
       colors: {
         0: 'yellow',
         1: 'green',
         2: 'red',
       },
-      text: {
-        0: 'Checking...',
-        1: 'Connected',
-        2: 'Failed',
-      },
-      timer: null,
     };
-  },
-  async mounted () {
-    this.status = await this.checkStatus();
-    this.timer = setInterval(async () => {
-      this.status = await this.checkStatus();
-    }, 15000);
-  },
-  beforeDestroy () {
-    clearInterval(this.timer);
-  },
-  methods: {
-    async checkStatus () {
-      this.$refs.avatar.$el.classList.add('spin');
-      const url = '/api/status/';
-      try {
-        await this.$axios({
-          method: 'GET',
-          baseURL: process.env.API_BASE_URL,
-          url,
-        });
-      } catch (err) {
-        return 2;
-      }
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      this.$refs.avatar.$el.classList.remove('spin');
-      return 1;
-    },
   },
 };
 </script>

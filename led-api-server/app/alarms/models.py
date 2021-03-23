@@ -6,6 +6,9 @@ class AlarmConfig(models.Model):
     playlist = models.CharField(
         max_length=255, blank=True, help_text="Mopidy URI of playlist"
     )
+    shuffle = models.BooleanField(
+        default=False, help_text="Enable shuffling of playlist"
+    )
     volumes = models.JSONField(
         help_text="List of (time, volume) tuples to progress through"
     )

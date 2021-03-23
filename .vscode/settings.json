@@ -1,5 +1,4 @@
 {
-    "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
     "eslint.validate": [
@@ -13,8 +12,15 @@
     "eslint.packageManager": "yarn",
     "eslint.format.enable": true,
     "eslint.options": {
-        "extensions": [".html", ".js", ".vue"]
+        "extensions": [
+            ".html",
+            ".js",
+            ".vue"
+        ]
     },
     "python.pythonPath": "/usr/bin/python3",
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/led-api-server/app"
+    ],
 }

@@ -1,12 +1,11 @@
 <template>
   <q-layout
     view="lHh Lpr lFf"
-    class="text-grey-4"
-    style="background: #1f1f1f"
+    style="background: #000811"
   >
     <q-header
       elevated
-      class="bg-grey-9"
+      class="bg-secondary"
     >
       <q-toolbar>
         <q-btn
@@ -18,12 +17,11 @@
           @click="drawerOpen = !drawerOpen"
         />
 
-        <q-toolbar-title>
-          {{ $appName }}
-        </q-toolbar-title>
+        <q-toolbar-title />
 
-        <connection-status class="q-mr-sm" />
-        <mopidy-connection-status />
+        <api-connection-status class="q-mr-sm" />
+        <mopidy-connection-status class="q-mr-sm" />
+        <WledConnectionStatus />
       </q-toolbar>
     </q-header>
 
@@ -36,13 +34,14 @@
       :width="300"
       :breakpoint="500"
 
-      content-class="bg-grey-10"
+      content-class="bg-secondary"
       @mouseover="miniState = false"
       @mouseout="miniState = true"
     >
       <q-list
         dark
         style="height: calc(100% - 150px); margin-top: 150px;"
+        class="text-grey-5"
       >
         <q-item
           v-for="(menuItem, id) in menuList"
@@ -51,9 +50,16 @@
           clickable
           :to="menuItem.route"
           exact
+          active-class="text-white text-weight-bold"
         >
-          <q-item-section avatar>
-            <q-icon :name="menuItem.icon" />
+          <q-item-section
+            avatar
+            top
+          >
+            <q-avatar
+              :icon="menuItem.icon"
+              rounded
+            />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ menuItem.label }}</q-item-label>
@@ -78,29 +84,20 @@
 
 <script>
 import { openURL } from 'quasar';
-import ConnectionStatus from 'components/ConnectionStatus';
+import ApiConnectionStatus from 'components/ApiConnectionStatus';
 import MopidyConnectionStatus from 'components/MopidyConnectionStatus';
+import WledConnectionStatus from 'components/WledConnectionStatus';
 
 const menuList = [
   {
-    icon: 'home',
-    label: 'Home',
+    icon: 'lightbulb',
+    label: 'Light',
     route: '/',
   },
   {
     icon: 'alarm',
     label: 'Alarms',
     route: '/alarms',
-  },
-  {
-    icon: 'color_lens',
-    label: 'Color',
-    route: '/colors',
-  },
-  {
-    icon: 'movie_filter',
-    label: 'Animations',
-    route: '/animations',
   },
   {
     icon: 'audiotrack',
@@ -111,7 +108,7 @@ const menuList = [
 
 export default {
   name: 'MyLayout',
-  components: { MopidyConnectionStatus, ConnectionStatus },
+  components: { MopidyConnectionStatus, ApiConnectionStatus, WledConnectionStatus },
   data () {
     return {
       drawerOpen: false,

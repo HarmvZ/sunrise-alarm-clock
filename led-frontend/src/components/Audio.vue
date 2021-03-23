@@ -1,7 +1,5 @@
 <template>
-  <Card
-    title="Now playing"
-  >
+  <div>
     <q-parallax
       :src="track === null ? 'statics/audio.jpg' : imageURL"
       :height="250"
@@ -11,9 +9,9 @@
         <q-spinner-bars
           v-show="state === 'playing'"
           color="primary"
-          size="10em"
+          size="4em"
           class="col-12"
-          style="opacity:0.5"
+          style="opacity:0.8"
         />
         <div
           v-show="track !== null"
@@ -30,89 +28,84 @@
             {{ albumName }}
           </div>
         </div>
+        <q-linear-progress
+          v-if="timePosition"
+          rounded
+          size="md"
+          :value="timePosition / trackLength"
+          class="q-mt-md"
+        />
       </div>
     </q-parallax>
-    <q-card-section
-      v-show="track !== null"
-      class="column items-center"
-    />
-
-    <q-card-section class="column items-center">
-      <q-linear-progress
-        v-if="timePosition"
-        rounded
-        size="xl"
-        :value="timePosition / trackLength"
-        color="grey-9"
-        label="progress"
-      />
-    </q-card-section>
-    <q-card-section class="column items-center">
-      <q-btn-group>
+    <q-card-section class="items-center">
+      <q-btn-group class="q-mb-sm">
         <q-btn
           color="primary"
           icon="skip_previous"
-          @click="mopidy.playback.previous()"
+          @click="$mopidy.playback.previous()"
         />
         <q-btn
           v-if="state === 'playing'"
           color="primary"
           icon="pause"
-          @click="mopidy.playback.pause()"
+          @click="$mopidy.playback.pause()"
         />
         <q-btn
           v-if="state === 'paused' || state === 'stopped'"
-          color="primary"
+          color="accent"
           icon="play_arrow"
-          @click="mopidy.playback.play()"
+          @click="$mopidy.playback.play()"
         />
         <q-btn
           v-if="state === 'paused' || state === 'playing'"
           color="primary"
           icon="stop"
-          @click="mopidy.playback.stop()"
+          @click="$mopidy.playback.stop()"
         />
         <q-btn
           color="primary"
           icon="skip_next"
-          @click="mopidy.playback.next()"
+          @click="$mopidy.playback.next()"
         />
       </q-btn-group>
-    </q-card-section>
-    <q-card-section class="column items-center">
-      <q-btn-group>
+      <div class="q-mt-sm">
         <q-btn
-          :color="repeat ? 'primary' : 'grey-9'"
+          :flat="!repeat"
+          :outline="repeat"
+          color="primary"
           icon="repeat"
-          @click="mopidy.tracklist.setRepeat([!repeat])"
+          class="q-mx-sm"
+          @click="$mopidy.tracklist.setRepeat([!repeat])"
         />
         <q-btn
-          :color="single ? 'primary' : 'grey-9'"
+          :flat="!single"
+          :outline="single"
+          color="primary"
           icon="repeat_one"
-          @click="mopidy.tracklist.setSingle([!single])"
+          class="q-mx-sm"
+          @click="$mopidy.tracklist.setSingle([!single])"
         />
         <q-btn
-          :color="random ? 'primary' : 'grey-9'"
+          :flat="!random"
+          :outline="random"
+          color="primary"
           icon="shuffle"
-          @click="mopidy.tracklist.setRandom([!random])"
+          class="q-mx-sm"
+          style="border: 0;"
+          @click="$mopidy.tracklist.setRandom([!random])"
         />
-      </q-btn-group>
+      </div>
+      <Volume />
     </q-card-section>
-  </Card>
+  </div>
 </template>
 
 <script>
-import Card from 'components/Card';
+import Volume from 'components/Volume';
 
 export default {
   name: 'Audio',
-  components: { Card },
-  props: {
-    mopidy: {
-      type: Object,
-      required: true,
-    },
-  },
+  components: { Volume },
   data () {
     return {
       connected: false,
@@ -133,26 +126,26 @@ export default {
     };
   },
   mounted () {
-    this.mopidy.playback.getState().then((state, timePosition) => this.updatePlaybackState(state, timePosition));
-    this.mopidy.playback.getCurrentTrack().then((track) => this.updateCurrentTrack(track));
-    this.mopidy.on('event:playbackStateChanged', eObj => {
+    this.$mopidy.playback.getState().then((state, timePosition) => this.updatePlaybackState(state, timePosition));
+    this.$mopidy.playback.getCurrentTrack().then((track) => this.updateCurrentTrack(track));
+    this.$mopidy.on('event:playbackStateChanged', eObj => {
       this.updatePlaybackState(eObj.new_state, eObj.time_position);
     });
 
-    this.mopidy.on('event:trackPlaybackStarted', eObj => {
+    this.$mopidy.on('event:trackPlaybackStarted', eObj => {
       this.updateCurrentTrack(eObj.tl_track.track);
     });
 
-    this.mopidy.on('event:trackPlaybackStopped', () => {
+    this.$mopidy.on('event:trackPlaybackStopped', () => {
       this.updatePlaybackState('stopped');
     });
 
-    this.mopidy.on('event:trackPlaybackPaused', eObj => {
+    this.$mopidy.on('event:trackPlaybackPaused', eObj => {
       this.updatePlaybackState('paused', eObj.time_position);
     });
 
-    this.mopidy.on('event:trackPlaybackResumed', () => {});
-    this.mopidy.on('event:optionsChanged', () => {
+    this.$mopidy.on('event:trackPlaybackResumed', () => {});
+    this.$mopidy.on('event:optionsChanged', () => {
       this.updateOptions();
     });
     this.updateOptions();
@@ -166,7 +159,7 @@ export default {
       }
       if (state === 'playing') {
         this.progressInterval = setInterval(() => {
-          this.mopidy.playback.getTimePosition().then(t => { this.timePosition = t; }, () => {});
+          this.$mopidy.playback.getTimePosition().then(t => { this.timePosition = t; }, () => {});
         }, 200);
       }
       if (state === 'stopped') {
@@ -186,7 +179,7 @@ export default {
         this.albumName = `${this.albumName} (${track.album.date})`;
       }
 
-      this.mopidy.library
+      this.$mopidy.library
         .getImages([[track.uri]])
         .then((result) => this.updateCover(track.uri, result));
     },
@@ -197,9 +190,9 @@ export default {
       this.imageHeight = image.height;
     },
     updateOptions () {
-      this.mopidy.tracklist.getRepeat().then(repeat => { this.repeat = repeat; });
-      this.mopidy.tracklist.getSingle().then(single => { this.single = single; });
-      this.mopidy.tracklist.getRandom().then(random => { this.random = random; });
+      this.$mopidy.tracklist.getRepeat().then(repeat => { this.repeat = repeat; });
+      this.$mopidy.tracklist.getSingle().then(single => { this.single = single; });
+      this.$mopidy.tracklist.getRandom().then(random => { this.random = random; });
     },
   },
 };

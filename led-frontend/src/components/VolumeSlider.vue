@@ -3,7 +3,7 @@
     ref="popup"
     class="full-width"
   >
-    <q-list class="full-width bg-grey-9 text-white">
+    <q-list class="full-width bg-grey-10 text-white">
       <q-item
         v-if="timeChangeable"
         class="row justify-center"

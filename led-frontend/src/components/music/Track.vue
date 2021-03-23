@@ -8,7 +8,7 @@
     <q-item-section
       avatar
     >
-      <q-avatar>
+      <q-avatar rounded>
         <img :src="imageUri">
       </q-avatar>
     </q-item-section>

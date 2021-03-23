@@ -118,25 +118,6 @@ LOGGING = {
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-key')
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-key")
 
-ALLOWED_HOSTS = [os.environ.get('HOSTNAME', 'localhost')]
-
-# ZeroMQ Lazy Pirate settings
-REQUEST_TIMEOUT = 2500
-REQUEST_RETRIES = 3
-SERVER_ENDPOINT = "tcp://zmq:5566"
-
-ALARM_COMMAND = "python3 {} startalarm >> {} 2>&1".format(
-    os.path.join(BASE_DIR, "manage.py"), os.path.join(BASE_DIR, "alarm_cron.log")
-)
-
-# Shell commands
-ALARM_CRONTAB_COMMAND = "sudo python3 {}".format(
-    os.path.join(BASE_DIR, "alarms/led_libs/start_alarm.py")
-)  # TODO replace
-ALARM_STOP_COMMAND = "sudo kill $(ps aux | grep 'start_alarm.py' | awk '{print $2}')"
-
-# Default clock colors
-CLOCK_BACKGROUND_COLOR = {"r": 0, "g": 0, "b": 0}
-CLOCK_FOREGROUND_COLOR = {"r": 255, "g": 0, "b": 0}
+ALLOWED_HOSTS = [os.environ.get("HOSTNAME", "localhost")]

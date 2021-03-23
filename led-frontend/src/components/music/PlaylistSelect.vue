@@ -2,7 +2,7 @@
   <div>
     <q-item-section>
       <q-parallax
-        :src="playlist.imageUri === '' ? 'statics/audio.jpg' : playlist.imageUri"
+        :src="!('imageUri' in playlist) || playlist.imageUri === '' ? 'statics/audio.jpg' : playlist.imageUri"
         :height="150"
       />
     </q-item-section>
@@ -16,7 +16,7 @@
         icon="open_in_new"
         class="full-width q-mb-sm"
         dark
-        color="grey-9"
+        color="grey-10"
         @click="openURL(editPlaylistUrl)"
       />
 
@@ -62,8 +62,6 @@ export default {
   data () {
     return {
       hostname: process.env.HOSTNAME,
-      mopidy: window.mopidy,
-      mopidyStatus: window.mopidyStatus,
       playlist: {},
     };
   },
@@ -80,8 +78,8 @@ export default {
       immediate: true,
       handler: function (val) {
         if (val !== '') {
-          this.mopidy.playlists.lookup([val]).then(pl => {
-            this.mopidy.library.getImages([[val]]).then(r => {
+          this.$mopidy.playlists.lookup([val]).then(pl => {
+            this.$mopidy.library.getImages([[val]]).then(r => {
               if (val in r && r[val].length > 0) {
                 pl['imageUri'] = r[val][0].uri;
               }

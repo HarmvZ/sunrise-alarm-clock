@@ -1,12 +1,7 @@
 <template>
-  <q-avatar
-    ref="avatar"
-    :icon="icons[mopidyStatus]"
-    :color="colors[mopidyStatus]"
-    text-color="white"
-    size="24px"
-    :class="mopidyStatus === 0 ? 'spin' : ''"
-    rounded
+  <ConnectionStatus
+    :status="mopidyStatus"
+    :icons="icons"
   />
 </template>
 
@@ -14,49 +9,25 @@
 </style>
 
 <script>
+import { mapState } from 'vuex';
+import ConnectionStatus from 'components/ConnectionStatus';
 
 export default {
   name: 'MopidyConnectionStatus',
+  components: { ConnectionStatus },
   data () {
     return {
-      mopidyStatus: window.mopidyStatus,
       icons: {
         0: 'loop',
         1: 'audiotrack',
-        2: 'error',
-      },
-      colors: {
-        0: 'yellow',
-        1: 'green',
-        2: 'red',
+        2: 'audiotrack',
       },
     };
   },
-  watch: {
-    mopidyStatus: {
-      immediate: true,
-      handler: function (s) {
-        console.log(' status', s);
-      },
-    },
+  computed: {
+    ...mapState({
+      mopidyStatus: 'mopidyStatus',
+    }),
   },
 };
 </script>
-
-<style scoped>
-.spin{
-  animation-name: spin;
-  animation-duration: 500ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-@keyframes spin {
-    from {
-        transform:rotate(0deg);
-    }
-    to {
-        transform:rotate(360deg);
-    }
-}
-</style>

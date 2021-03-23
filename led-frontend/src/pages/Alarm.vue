@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-px-md">
+  <q-page padding>
     <alarm-list dark />
   </q-page>
 </template>

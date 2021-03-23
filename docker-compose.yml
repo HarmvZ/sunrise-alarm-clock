@@ -1,25 +1,11 @@
 version: '3.7'
 services: 
-  zmq:
-    privileged: true
-    build:
-      context: ./led-zmq-server
-      target: 'develop-stage'
-    volumes:
-      - type: bind
-        source: ./led-zmq-server
-        target: /home/docker/code
-
   ui:
     build:
       context: ./led-frontend
       target: 'develop-stage'
-      args:
-        - HOSTNAME=localhost
     env_file:
       - .env      
-    environment:
-      - HOSTNAME=localhost
     ports:
     - '8088:8088'
     volumes:
@@ -33,9 +19,6 @@ services:
       target: 'develop-stage'
     env_file:
       - .env      
-    environment:
-      - HOSTNAME=localhost
-      - DJANGO_SECRET_KEY=unsafe_key
     ports:
       - "8888:8000"
     volumes:
@@ -44,8 +27,7 @@ services:
         target: /home/docker/code
     command: >-
       bash -c "
-      service cron start
-      && cd /home/docker/code/app
+      cd /home/docker/code/app
       && python3 manage.py migrate
       && python3 manage.py runserver 0.0.0.0:8000 
       "

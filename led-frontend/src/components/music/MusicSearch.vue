@@ -45,7 +45,7 @@ export default {
     musicSearch: function (val) {
       if (val !== '') {
         this.loading = true;
-        window.mopidy.library.search({ query: { artist: [val] } }).then(r => {
+        this.$mopidy.library.search({ query: { artist: [val] } }).then(r => {
           this.searchResults = r[0];
           const uris = [];
           for (const tType of ['albums', 'artists', 'tracks']) {
@@ -53,7 +53,7 @@ export default {
               uris.push(...this.searchResults[tType].map(a => a.uri));
             }
           }
-          window.mopidy.library.getImages([uris]).then(r => {
+          this.$mopidy.library.getImages([uris]).then(r => {
             for (const [uri, image] of Object.entries(r)) {
               this.$set(this.imageUris, uri, image);
             }

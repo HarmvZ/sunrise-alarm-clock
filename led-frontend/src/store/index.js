@@ -12,8 +12,32 @@ Vue.use(Vuex);
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    state: {
+      wledStatus: 0,
+      wledState: {},
+      wledEffects: [],
+      wledPalettes: [],
+      mopidyStatus: 0,
+    },
+    mutations: {
+      setWledStatus (state, status) {
+        state.wledStatus = status;
+      },
+      setWledState (state, wledState) {
+        state.wledState = wledState;
+      },
+      setWledEffects (state, wledEffects) {
+        state.wledEffects = wledEffects;
+      },
+      setWledPalettes (state, wledPalettes) {
+        state.wledPalettes = wledPalettes;
+      },
+      setMopidyStatus (state, status) {
+        state.mopidyStatus = status;
+      },
+    },
+
     modules: {
-      // example
     },
 
     // enable strict mode (adds overhead!)

@@ -1,31 +1,48 @@
 version: '3.7'
 services: 
-  zmq:
-    restart: always
-    privileged: true # Allow server to acces rpi GPIO for controlling LEDs
-    build:
-      context: ./led-zmq-server
-      target: 'production-stage'
-
   ui:
     restart: always
     build:
       context: ./led-frontend
       target: 'production-stage'
       args:
-        - HOSTNAME
+        - HOSTNAME=$HOSTNAME
+        - WLED_WS=$WLED_WS
+        - WLED_UI=$WLED_UI
+        - WLED_API=$WLED_API
+        - MOPIDY_WS=$MOPIDY_WS
+        - MOPIDY_UI=$MOPIDY_UI
+        - MOPIDY_API=$MOPIDY_API
     env_file:
       - .env
     ports:
     - '80:80'
+
+  # TODO activate production stage, when flaky threading is fixed
+  # api:
+  #   restart: always
+  #   build:
+  #     context: ./led-api-server
+  #     dockerfile: ./deploy/Dockerfile
+  #     target: 'production-stage'
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - '8888:8888'
 
   api:
     restart: always
     build:
       context: ./led-api-server
       dockerfile: ./deploy/Dockerfile
-      target: 'production-stage'
+      target: 'develop-stage'
     env_file:
-      - .env
+      - .env      
     ports:
-      - '8888:8888'
+      - "8888:8000"
+    command: >-
+      bash -c "
+      cd /home/docker/code/app
+      && python3 manage.py migrate
+      && python3 manage.py runserver 0.0.0.0:8000 
+      "
